@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="auth-page">
+        <div class="card auth-card animate-fadeInUp">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <img src="assets/logo.png" alt="SMMFamy">
+                </div>
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-subtitle">Sign in to your SMMFamy account</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" class="form-input" id="email" placeholder="you@example.com" required
+                        autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" class="form-input" id="password" placeholder="Enter your password" required
+                        autocomplete="current-password">
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
+                    <label class="form-check" style="margin: 0;">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <span class="form-check-label">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm" style="color: var(--color-primary-600);">Forgot password?</a>
+                </div>
+
+                <div class="alert alert-error" id="errorAlert" style="display: none;"></div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-block" id="loginBtn">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="register.html">Sign up for free</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorEl = document.getElementById('errorAlert');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // Clear error
+            errorEl.style.display = 'none';
+
+            // Disable button
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="spinner spinner-sm"></span> Signing in...';
+
+            // Slight delay for UX
+            setTimeout(() => {
+                const result = Auth.login(email, password, rememberMe);
+
+                if (result.success) {
+                    // Redirect based on user type
+                    if (result.user.isAdmin) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        // Check for redirect URL
+                        const redirect = Storage.session.get('redirectAfterLogin', 'services.html');
+                        Storage.session.remove('redirectAfterLogin');
+                        window.location.href = redirect;
+                    }
+                } else {
+                    errorEl.textContent = result.error;
+                    errorEl.style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Sign In';
+                }
+            }, 500);
+        });
+
+        // Redirect if already logged in
+        if (Auth.isLoggedIn()) {
+            window.location.href = 'services.html';
+        }
+    </script>
+</body>
+
+</html>

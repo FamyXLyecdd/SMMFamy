@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SMMFamy Reseller Panel - Become a reseller and earn more">
+    <title>Reseller Panel - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .reseller-hero {
+            text-align: center;
+            padding: var(--space-12) var(--space-6);
+            background: linear-gradient(135deg, var(--color-primary-600), var(--color-secondary-600));
+            color: white;
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-8);
+        }
+
+        .reseller-hero h1 {
+            font-size: var(--text-4xl);
+            margin-bottom: var(--space-4);
+        }
+
+        .reseller-hero p {
+            font-size: var(--text-lg);
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto var(--space-6);
+        }
+
+        .reseller-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-10);
+        }
+
+        .tier-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            border: 2px solid var(--border-default);
+            text-align: center;
+            transition: var(--transition-normal);
+        }
+
+        .tier-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--color-primary-300);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tier-card.popular {
+            border-color: var(--color-primary-500);
+            position: relative;
+        }
+
+        .tier-card.popular::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-primary-500);
+            color: white;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: var(--font-bold);
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-3);
+        }
+
+        .tier-bronze .tier-badge {
+            background: #CD7F32;
+            color: white;
+        }
+
+        .tier-silver .tier-badge {
+            background: #C0C0C0;
+            color: #333;
+        }
+
+        .tier-gold .tier-badge {
+            background: #FFD700;
+            color: #333;
+        }
+
+        .tier-diamond .tier-badge {
+            background: linear-gradient(135deg, #79e2fd, #b7b5ff);
+            color: #333;
+        }
+
+        .tier-discount {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-extrabold);
+            color: var(--color-primary-600);
+            margin-bottom: var(--space-1);
+        }
+
+        .tier-discount span {
+            font-size: var(--text-lg);
+            font-weight: var(--font-normal);
+        }
+
+        .tier-requirement {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-4);
+        }
+
+        .tier-features {
+            text-align: left;
+            margin: var(--space-4) 0;
+        }
+
+        .tier-features li {
+            padding: var(--space-2) 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: var(--text-sm);
+        }
+
+        .tier-features li:last-child {
+            border-bottom: none;
+        }
+
+        .reseller-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-10);
+        }
+
+        .reseller-stat {
+            background: var(--bg-card);
+            padding: var(--space-5);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            border: 1px solid var(--border-default);
+        }
+
+        .reseller-stat-value {
+            font-size: var(--text-3xl);
+            font-weight: var(--font-extrabold);
+            color: var(--color-primary-600);
+        }
+
+        .reseller-stat-label {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+        }
+
+        .reseller-benefits {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin-bottom: var(--space-10);
+            border: 1px solid var(--border-default);
+        }
+
+        .reseller-benefits h2 {
+            text-align: center;
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-8);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-primary-100);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .benefit-content h3 {
+            font-size: var(--text-base);
+            margin-bottom: var(--space-1);
+        }
+
+        .benefit-content p {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .api-promo {
+            background: linear-gradient(135deg, var(--color-primary-100), var(--color-secondary-100));
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            text-align: center;
+            margin-bottom: var(--space-10);
+        }
+
+        .api-promo h2 {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-3);
+        }
+
+        .api-promo p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-4);
+        }
+
+        .reseller-form {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid var(--border-default);
+        }
+
+        .reseller-form h2 {
+            text-align: center;
+            margin-bottom: var(--space-6);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <a href="login.html" class="btn btn-ghost">Sign In</a>
+                    <a href="register.html" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <!-- Hero -->
+            <div class="reseller-hero">
+                <h1>Become a Reseller</h1>
+                <p>Partner with SMMFamy and earn up to 25% discount on all services. Start your own SMM business today!
+                </p>
+                <a href="#apply" class="btn btn-lg" style="background: white; color: var(--color-primary-600);">
+                    Apply Now
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="reseller-stats">
+                <div class="reseller-stat">
+                    <div class="reseller-stat-value">500+</div>
+                    <div class="reseller-stat-label">Active Resellers</div>
+                </div>
+                <div class="reseller-stat">
+                    <div class="reseller-stat-value">25%</div>
+                    <div class="reseller-stat-label">Max Discount</div>
+                </div>
+                <div class="reseller-stat">
+                    <div class="reseller-stat-value">₱10M+</div>
+                    <div class="reseller-stat-label">Total Payouts</div>
+                </div>
+                <div class="reseller-stat">
+                    <div class="reseller-stat-value">24/7</div>
+                    <div class="reseller-stat-label">Support</div>
+                </div>
+            </div>
+
+            <!-- Tiers -->
+            <h2 class="text-2xl text-center mb-6">Reseller Tiers</h2>
+            <div class="reseller-tiers">
+                <div class="tier-card tier-bronze">
+                    <span class="tier-badge">BRONZE</span>
+                    <div class="tier-discount">5%<span> OFF</span></div>
+                    <p class="tier-requirement">Total deposits: ₱500+</p>
+                    <ul class="tier-features">
+                        <li>✓ 5% discount on all services</li>
+                        <li>✓ Standard support priority</li>
+                        <li>✓ API access</li>
+                        <li>✓ Real-time order tracking</li>
+                    </ul>
+                    <button class="btn btn-secondary w-full">Current Tier</button>
+                </div>
+
+                <div class="tier-card tier-silver popular">
+                    <span class="tier-badge">SILVER</span>
+                    <div class="tier-discount">10%<span> OFF</span></div>
+                    <p class="tier-requirement">Total deposits: ₱2,500+</p>
+                    <ul class="tier-features">
+                        <li>✓ 10% discount on all services</li>
+                        <li>✓ Priority support</li>
+                        <li>✓ API access with higher limits</li>
+                        <li>✓ Custom order notifications</li>
+                        <li>✓ Dedicated account manager</li>
+                    </ul>
+                    <button class="btn btn-primary w-full">Upgrade</button>
+                </div>
+
+                <div class="tier-card tier-gold">
+                    <span class="tier-badge">GOLD</span>
+                    <div class="tier-discount">15%<span> OFF</span></div>
+                    <p class="tier-requirement">Total deposits: ₱10,000+</p>
+                    <ul class="tier-features">
+                        <li>✓ 15% discount on all services</li>
+                        <li>✓ VIP support (fastest response)</li>
+                        <li>✓ Unlimited API requests</li>
+                        <li>✓ Custom branding options</li>
+                        <li>✓ Early access to new services</li>
+                        <li>✓ Exclusive promotions</li>
+                    </ul>
+                    <button class="btn btn-primary w-full">Upgrade</button>
+                </div>
+
+                <div class="tier-card tier-diamond">
+                    <span class="tier-badge">DIAMOND</span>
+                    <div class="tier-discount">25%<span> OFF</span></div>
+                    <p class="tier-requirement">Total deposits: ₱50,000+</p>
+                    <ul class="tier-features">
+                        <li>✓ 25% discount on all services</li>
+                        <li>✓ Direct line to support team</li>
+                        <li>✓ White-label panel option</li>
+                        <li>✓ Custom payment processing</li>
+                        <li>✓ Priority order processing</li>
+                        <li>✓ Partner program benefits</li>
+                        <li>✓ Revenue sharing opportunities</li>
+                    </ul>
+                    <button class="btn btn-primary w-full">Upgrade</button>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="reseller-benefits">
+                <h2>Why Become a Reseller?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💰</div>
+                        <div class="benefit-content">
+                            <h3>Higher Profits</h3>
+                            <p>Get up to 25% discount and set your own prices for maximum profit margins.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">⚡</div>
+                        <div class="benefit-content">
+                            <h3>Fast Delivery</h3>
+                            <p>Reseller orders get priority processing for faster delivery times.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🔧</div>
+                        <div class="benefit-content">
+                            <h3>API Integration</h3>
+                            <p>Connect your panel directly to SMMFamy with our powerful REST API.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📊</div>
+                        <div class="benefit-content">
+                            <h3>Analytics Dashboard</h3>
+                            <p>Track your orders, revenue, and performance with detailed analytics.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🛡️</div>
+                        <div class="benefit-content">
+                            <h3>Reliable Service</h3>
+                            <p>99.9% uptime guarantee with automated refill protection.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎓</div>
+                        <div class="benefit-content">
+                            <h3>Training & Resources</h3>
+                            <p>Access to guides, tutorials, and marketing materials to grow your business.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Promo -->
+            <div class="api-promo">
+                <h2>Automate with Our API</h2>
+                <p>Connect your panel to SMMFamy and automate your entire workflow. Place orders, check status, and
+                    more.</p>
+                <a href="api-docs.html" class="btn btn-primary">View API Documentation</a>
+            </div>
+
+            <!-- Application Form -->
+            <div class="reseller-form" id="apply">
+                <h2>Apply to Become a Reseller</h2>
+                <form id="resellerForm">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Messenger/Contact</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Do you have an existing panel?</label>
+                        <select class="form-select" required>
+                            <option value="">Select...</option>
+                            <option value="yes">Yes, I have a panel</option>
+                            <option value="no">No, starting fresh</option>
+                            <option value="planning">Planning to build one</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Estimated monthly orders</label>
+                        <select class="form-select" required>
+                            <option value="">Select...</option>
+                            <option value="100">Less than 100</option>
+                            <option value="500">100 - 500</option>
+                            <option value="1000">500 - 1,000</option>
+                            <option value="5000">1,000 - 5,000</option>
+                            <option value="10000">5,000+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tell us about yourself</label>
+                        <textarea class="form-textarea" rows="4" placeholder="Your experience, goals, etc."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-full">Submit Application</button>
+                </form>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <div class="footer-links">
+                        <a href="terms.html">Terms of Service</a>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="faq.html">FAQ</a>
+                    </div>
+                    <p>2026 SMMFamy. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.getElementById('resellerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            Notify.success('Application submitted! We\'ll contact you within 24 hours.');
+            e.target.reset();
+        });
+    </script>
+</body>
+
+</html>

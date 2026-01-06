@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Tickets - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <a href="login.html" class="btn btn-ghost">Sign In</a>
+                    <a href="register.html" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="app-page-header">
+                <div>
+                    <h1 class="app-page-title">Support Tickets</h1>
+                    <p class="app-page-subtitle">Get help from our support team</p>
+                </div>
+                <button class="btn btn-primary" onclick="Tickets.showCreateModal()">New Ticket</button>
+            </div>
+
+            <!-- Ticket Filters -->
+            <div class="card" style="margin-bottom: var(--space-4);">
+                <div class="flex gap-2 flex-wrap">
+                    <button class="btn btn-sm btn-primary" data-filter="all">All</button>
+                    <button class="btn btn-sm btn-secondary" data-filter="open">Open</button>
+                    <button class="btn btn-sm btn-secondary" data-filter="inProgress">In Progress</button>
+                    <button class="btn btn-sm btn-secondary" data-filter="resolved">Resolved</button>
+                    <button class="btn btn-sm btn-secondary" data-filter="closed">Closed</button>
+                </div>
+            </div>
+
+            <!-- Tickets List -->
+            <div id="ticketsList">
+                <div class="skeleton skeleton-card" style="height: 100px; margin-bottom: var(--space-3);"></div>
+                <div class="skeleton skeleton-card" style="height: 100px; margin-bottom: var(--space-3);"></div>
+                <div class="skeleton skeleton-card" style="height: 100px;"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/tickets.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Initialize tickets page
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!Auth.requireAuth()) return;
+
+            // Load tickets
+            loadTickets();
+
+            // Filter buttons
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('[data-filter]').forEach(b => {
+                        b.classList.remove('btn-primary');
+                        b.classList.add('btn-secondary');
+                    });
+                    btn.classList.remove('btn-secondary');
+                    btn.classList.add('btn-primary');
+
+                    loadTickets(btn.dataset.filter);
+                });
+            });
+        });
+
+        function loadTickets(filter = 'all') {
+            let tickets = Tickets.getUserTickets();
+
+            if (filter !== 'all') {
+                tickets = tickets.filter(t => t.status === filter);
+            }
+
+            Tickets.renderTicketList('ticketsList', tickets);
+        }
+    </script>
+</body>
+
+</html>

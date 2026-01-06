@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View order details - SMMFamy SMM Panel">
+    <title>Order Details - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .order-detail-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-default);
+            overflow: hidden;
+            margin-bottom: var(--space-6);
+        }
+
+        .order-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-6);
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-secondary-50));
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .order-id {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+        }
+
+        .order-id span {
+            color: var(--color-primary-600);
+        }
+
+        .order-meta {
+            text-align: right;
+        }
+
+        .order-date {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .order-detail-body {
+            padding: var(--space-6);
+        }
+
+        .order-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+
+        .order-info-item {
+            background: var(--bg-surface);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+        }
+
+        .order-info-label {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+            margin-bottom: var(--space-1);
+        }
+
+        .order-info-value {
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+        }
+
+        .order-link-container {
+            background: var(--bg-surface);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
+        }
+
+        .order-link-container label {
+            display: block;
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+            margin-bottom: var(--space-2);
+        }
+
+        .order-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .order-link input {
+            flex: 1;
+            background: var(--bg-card);
+        }
+
+        .order-progress-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .order-progress-section h3 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-4);
+        }
+
+        .order-progress-bar {
+            height: 8px;
+            background: var(--bg-muted);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: var(--space-2);
+        }
+
+        .order-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500));
+            border-radius: var(--radius-full);
+            transition: width 0.5s ease;
+        }
+
+        .order-progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .order-timeline {
+            border-left: 2px solid var(--border-default);
+            padding-left: var(--space-6);
+            margin-left: var(--space-2);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: var(--space-6);
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: calc(-1 * var(--space-6) - 6px);
+            width: 12px;
+            height: 12px;
+            background: var(--bg-card);
+            border: 2px solid var(--color-primary-500);
+            border-radius: var(--radius-full);
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background: var(--color-primary-500);
+        }
+
+        .timeline-item.pending .timeline-dot {
+            border-color: var(--color-gray-300);
+        }
+
+        .timeline-content {
+            background: var(--bg-surface);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-md);
+        }
+
+        .timeline-title {
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-1);
+        }
+
+        .timeline-time {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: var(--space-3);
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .order-detail-header {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--space-2);
+            }
+
+            .order-meta {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link active">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <span class="balance-display" id="balanceDisplay">₱0.00</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <a href="orders.html" class="btn btn-ghost mb-4">← Back to Orders</a>
+
+            <div class="order-detail-card" id="orderCard">
+                <div class="order-detail-header">
+                    <div>
+                        <div class="order-id">Order #<span id="orderId">-</span></div>
+                        <p class="text-muted" id="serviceName">Loading...</p>
+                    </div>
+                    <div class="order-meta">
+                        <span class="badge" id="orderStatus">-</span>
+                        <p class="order-date" id="orderDate">-</p>
+                    </div>
+                </div>
+
+                <div class="order-detail-body">
+                    <!-- Order Info Grid -->
+                    <div class="order-info-grid">
+                        <div class="order-info-item">
+                            <div class="order-info-label">Quantity</div>
+                            <div class="order-info-value" id="orderQuantity">-</div>
+                        </div>
+                        <div class="order-info-item">
+                            <div class="order-info-label">Amount Charged</div>
+                            <div class="order-info-value" id="orderCharge">-</div>
+                        </div>
+                        <div class="order-info-item">
+                            <div class="order-info-label">Start Count</div>
+                            <div class="order-info-value" id="orderStartCount">-</div>
+                        </div>
+                        <div class="order-info-item">
+                            <div class="order-info-label">Remaining</div>
+                            <div class="order-info-value" id="orderRemaining">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Link -->
+                    <div class="order-link-container">
+                        <label>Target Link</label>
+                        <div class="order-link">
+                            <input type="text" class="form-input" id="orderLink" readonly>
+                            <button class="btn btn-secondary" id="copyLinkBtn">Copy</button>
+                            <a class="btn btn-primary" id="visitLinkBtn" target="_blank">Visit</a>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="order-progress-section" id="progressSection">
+                        <h3>Delivery Progress</h3>
+                        <div class="order-progress-bar">
+                            <div class="order-progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <div class="order-progress-info">
+                            <span id="progressDelivered">0 delivered</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <h3 style="margin-bottom: var(--space-4);">Order Timeline</h3>
+                    <div class="order-timeline" id="orderTimeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Order Created</div>
+                                <div class="timeline-time" id="timelineCreated">-</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item" id="timelineStartedItem">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Processing Started</div>
+                                <div class="timeline-time" id="timelineStarted">-</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item pending" id="timelineCompletedItem">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Completed</div>
+                                <div class="timeline-time" id="timelineCompleted">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="order-actions mt-6">
+                        <button class="btn btn-secondary" id="refreshBtn">
+                            Refresh Status
+                        </button>
+                        <button class="btn btn-warning" id="refillBtn" style="display: none;">
+                            Request Refill
+                        </button>
+                        <button class="btn btn-error" id="cancelBtn" style="display: none;">
+                            Cancel Order
+                        </button>
+                        <button class="btn btn-primary" id="reorderBtn">
+                            Reorder
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Orders -->
+            <div class="card" id="relatedOrders" style="display: none;">
+                <h3 class="mb-4">Related Orders</h3>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Service</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="relatedOrdersBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!Auth.requireAuth()) return;
+
+            // Get order ID from URL
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get('id');
+
+            if (!orderId) {
+                Notify.error('Order ID not found');
+                window.location.href = 'orders.html';
+                return;
+            }
+
+            // Load order
+            loadOrder(orderId);
+
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                loadOrder(orderId);
+                Notify.success('Order status refreshed');
+            });
+
+            // Copy link
+            document.getElementById('copyLinkBtn').addEventListener('click', () => {
+                Utils.copyToClipboard(document.getElementById('orderLink').value);
+                Notify.success('Link copied');
+            });
+
+            // Refill button
+            document.getElementById('refillBtn').addEventListener('click', async () => {
+                const confirmed = await Notify.confirm('Request a refill for this order?');
+                if (confirmed) {
+                    // Mock refill request
+                    Notify.success('Refill request submitted');
+                }
+            });
+
+            // Cancel button
+            document.getElementById('cancelBtn').addEventListener('click', async () => {
+                const confirmed = await Notify.confirm('Are you sure you want to cancel this order?');
+                if (confirmed) {
+                    Notify.success('Cancel request submitted');
+                }
+            });
+
+            // Reorder button
+            document.getElementById('reorderBtn').addEventListener('click', () => {
+                const order = Storage.get('orders', []).find(o => o.id == orderId);
+                if (order) {
+                    window.location.href = `services.html?service=${order.serviceId}&link=${encodeURIComponent(order.link)}`;
+                }
+            });
+        });
+
+        function loadOrder(orderId) {
+            const orders = Storage.get('orders', []);
+            const order = orders.find(o => o.id == orderId);
+
+            if (!order) {
+                Notify.error('Order not found');
+                window.location.href = 'orders.html';
+                return;
+            }
+
+            // Populate order details
+            document.getElementById('orderId').textContent = order.id;
+            document.getElementById('serviceName').textContent = order.serviceName || 'Service';
+
+            // Status badge
+            const statusBadge = document.getElementById('orderStatus');
+            statusBadge.textContent = order.status;
+            statusBadge.className = 'badge badge-' + getStatusColor(order.status);
+
+            document.getElementById('orderDate').textContent = Utils.formatDate(order.createdAt);
+            document.getElementById('orderQuantity').textContent = order.quantity?.toLocaleString() || '-';
+            document.getElementById('orderCharge').textContent = SMMApi.formatPrice(order.charge || 0);
+            document.getElementById('orderStartCount').textContent = order.startCount?.toLocaleString() || '-';
+            document.getElementById('orderRemaining').textContent = order.remaining?.toLocaleString() || '-';
+
+            // Link
+            document.getElementById('orderLink').value = order.link || '';
+            document.getElementById('visitLinkBtn').href = order.link || '#';
+
+            // Progress
+            const delivered = order.quantity - (order.remaining || 0);
+            const progress = order.quantity > 0 ? (delivered / order.quantity) * 100 : 0;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressDelivered').textContent = `${delivered.toLocaleString()} delivered`;
+            document.getElementById('progressPercent').textContent = `${Math.round(progress)}%`;
+
+            // Timeline
+            document.getElementById('timelineCreated').textContent = Utils.formatDate(order.createdAt, 'datetime');
+
+            if (order.startedAt || order.status !== 'Pending') {
+                document.getElementById('timelineStartedItem').classList.add('completed');
+                document.getElementById('timelineStarted').textContent = Utils.formatDate(order.startedAt || order.createdAt, 'datetime');
+            }
+
+            if (order.status === 'Completed') {
+                document.getElementById('timelineCompletedItem').classList.add('completed');
+                document.getElementById('timelineCompletedItem').classList.remove('pending');
+                document.getElementById('timelineCompleted').textContent = Utils.formatDate(order.completedAt || new Date().toISOString(), 'datetime');
+            }
+
+            // Show/hide buttons based on status
+            if (order.status === 'Completed' && order.hasRefill) {
+                document.getElementById('refillBtn').style.display = 'inline-flex';
+            }
+
+            if (order.status === 'Pending') {
+                document.getElementById('cancelBtn').style.display = 'inline-flex';
+            }
+
+            // Load related orders (same link)
+            loadRelatedOrders(order.link, orderId);
+        }
+
+        function loadRelatedOrders(link, currentOrderId) {
+            const orders = Storage.get('orders', []);
+            const related = orders.filter(o => o.link === link && o.id != currentOrderId);
+
+            if (related.length === 0) return;
+
+            document.getElementById('relatedOrders').style.display = 'block';
+
+            document.getElementById('relatedOrdersBody').innerHTML = related.slice(0, 5).map(order => `
+                <tr onclick="window.location.href='order-details.html?id=${order.id}'" style="cursor: pointer;">
+                    <td>#${order.id}</td>
+                    <td>${Utils.truncate(order.serviceName || 'Service', 30)}</td>
+                    <td>${order.quantity?.toLocaleString() || '-'}</td>
+                    <td><span class="badge badge-${getStatusColor(order.status)}">${order.status}</span></td>
+                    <td>${Utils.formatRelativeTime(order.createdAt)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'Pending': 'warning',
+                'Processing': 'info',
+                'In Progress': 'info',
+                'Completed': 'success',
+                'Partial': 'warning',
+                'Canceled': 'error',
+                'Refunded': 'secondary'
+            };
+            return colors[status] || 'secondary';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Program - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <a href="login.html" class="btn btn-ghost">Sign In</a>
+                    <a href="register.html" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="app-page-header">
+                <div>
+                    <h1 class="app-page-title">Referral Program</h1>
+                    <p class="app-page-subtitle">Earn 10% commission on every purchase your referrals make</p>
+                </div>
+            </div>
+
+            <!-- How it Works -->
+            <div class="card" style="margin-bottom: var(--space-6);">
+                <h3 class="card-title" style="margin-bottom: var(--space-4);">How it Works</h3>
+                <div class="grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="text-center">
+                        <div class="card-icon"
+                            style="margin: 0 auto var(--space-3); background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));">
+                            1</div>
+                        <h4>Share Your Link</h4>
+                        <p class="text-sm text-muted">Copy your unique referral link and share it with friends</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="card-icon"
+                            style="margin: 0 auto var(--space-3); background: linear-gradient(135deg, var(--color-success-500), var(--color-accent-500));">
+                            2</div>
+                        <h4>Friends Sign Up</h4>
+                        <p class="text-sm text-muted">When someone registers using your link, they become your referral
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <div class="card-icon"
+                            style="margin: 0 auto var(--space-3); background: linear-gradient(135deg, var(--color-warning-500), var(--color-error-500));">
+                            3</div>
+                        <h4>Earn Commission</h4>
+                        <p class="text-sm text-muted">Get 10% of every purchase they make, forever!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Dashboard -->
+            <div id="referralDashboard">
+                <div class="skeleton skeleton-card" style="height: 200px;"></div>
+            </div>
+
+            <!-- Referred Users -->
+            <div class="card" style="margin-top: var(--space-6);">
+                <h3 class="card-title" style="margin-bottom: var(--space-4);">Your Referrals</h3>
+                <div id="referredUsersList">
+                    <div class="skeleton skeleton-text" style="height: 40px; margin-bottom: 8px;"></div>
+                    <div class="skeleton skeleton-text" style="height: 40px; margin-bottom: 8px;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/referrals.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Initialize referrals page
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!Auth.requireAuth()) return;
+
+            // Render dashboard
+            Referrals.renderDashboard('referralDashboard');
+
+            // Load referred users
+            loadReferredUsers();
+        });
+
+        function loadReferredUsers() {
+            const container = document.getElementById('referredUsersList');
+            const users = Referrals.getReferredUsers();
+
+            if (users.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: var(--space-6);">
+                        <p class="text-muted">You haven't referred anyone yet. Share your link to start earning!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Earnings</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map(user => `
+                            <tr>
+                                <td>
+                                    <div class="font-semibold">${Utils.escapeHtml(user.userName)}</div>
+                                    <div class="text-sm text-muted">${user.userEmail}</div>
+                                </td>
+                                <td><span class="status-badge status-${user.status}">${user.status}</span></td>
+                                <td>${SMMApi.formatPrice(user.earnings || 0)}</td>
+                                <td>${Utils.formatRelativeTime(user.createdAt)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+    </script>
+</body>
+
+</html>

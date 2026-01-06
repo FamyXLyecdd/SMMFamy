@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mass Order - Place multiple orders at once">
+    <title>Mass Order - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .mass-order-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: var(--space-6);
+        }
+
+        @media (max-width: 1024px) {
+            .mass-order-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .order-type-tabs {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-6);
+        }
+
+        .order-type-tab {
+            padding: var(--space-2) var(--space-4);
+            background: var(--bg-muted);
+            color: var(--text-secondary);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            text-decoration: none;
+        }
+
+        .order-type-tab.active {
+            background: var(--color-primary-500);
+            color: white;
+        }
+
+        .order-type-tab:not(.active):hover {
+            background: var(--color-primary-100);
+            color: var(--color-primary-700);
+        }
+
+        .mass-order-form {
+            background: var(--bg-card);
+            padding: var(--space-6);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-default);
+        }
+
+        .mass-order-label {
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-3);
+            display: block;
+        }
+
+        .mass-order-textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: var(--space-4);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-lg);
+            font-family: monospace;
+            font-size: var(--text-sm);
+            line-height: 1.6;
+            resize: vertical;
+            background: var(--bg-surface);
+        }
+
+        .mass-order-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary-400);
+            box-shadow: 0 0 0 3px var(--color-primary-100);
+        }
+
+        .mass-order-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .help-panel {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-default);
+            overflow: hidden;
+            position: sticky;
+            top: 100px;
+        }
+
+        .help-panel-header {
+            background: var(--color-primary-500);
+            color: white;
+            padding: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .help-panel-header h3 {
+            font-size: var(--text-lg);
+        }
+
+        .help-panel-body {
+            padding: var(--space-4);
+        }
+
+        .help-section {
+            margin-bottom: var(--space-4);
+        }
+
+        .help-section p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-2);
+        }
+
+        .help-link {
+            color: var(--color-primary-500);
+        }
+
+        .help-example {
+            background: var(--bg-surface);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            margin-top: var(--space-3);
+        }
+
+        .help-example-title {
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-2);
+        }
+
+        .help-example-list {
+            list-style: disc;
+            padding-left: var(--space-4);
+        }
+
+        .help-example-list li {
+            font-family: monospace;
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-1);
+        }
+
+        .format-badge {
+            display: inline-block;
+            background: var(--color-primary-100);
+            color: var(--color-primary-700);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-family: monospace;
+            font-size: var(--text-sm);
+            margin: var(--space-1) 0;
+        }
+
+        .order-summary {
+            margin-top: var(--space-4);
+            padding: var(--space-4);
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+        }
+
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-2);
+            font-size: var(--text-sm);
+        }
+
+        .order-summary-row:last-child {
+            margin-bottom: 0;
+            font-weight: var(--font-bold);
+            font-size: var(--text-base);
+            padding-top: var(--space-2);
+            border-top: 1px solid var(--border-default);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link active">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="funds.html" class="nav-link">Add Funds</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <span class="balance-display" id="balanceDisplay">₱0.00</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <!-- Order Type Tabs -->
+            <div class="order-type-tabs">
+                <a href="services.html" class="order-type-tab">🛒 New Order</a>
+                <button class="order-type-tab active">📦 Mass Order</button>
+            </div>
+
+            <div class="mass-order-layout">
+                <!-- Mass Order Form -->
+                <div class="mass-order-form">
+                    <label class="mass-order-label">One order per line in format</label>
+                    <textarea class="mass-order-textarea" id="massOrderInput" placeholder="service_id | link | quantity
+
+Example:
+3740|https://instagram.com/user1|1000
+3740|https://instagram.com/user2|1000
+3740|https://instagram.com/user3|1000"></textarea>
+
+                    <div class="order-summary" id="orderSummary" style="display: none;">
+                        <div class="order-summary-row">
+                            <span>Valid Orders:</span>
+                            <span id="validOrdersCount">0</span>
+                        </div>
+                        <div class="order-summary-row">
+                            <span>Invalid Lines:</span>
+                            <span id="invalidLinesCount">0</span>
+                        </div>
+                        <div class="order-summary-row">
+                            <span>Total Charge:</span>
+                            <span id="totalCharge">₱0.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg" id="submitMassOrder"
+                        style="width: 100%; margin-top: var(--space-4);">
+                        Submit Mass Order
+                    </button>
+                </div>
+
+                <!-- Help Panel -->
+                <div class="help-panel">
+                    <div class="help-panel-header">
+                        <span>ℹ️</span>
+                        <h3>How Mass Order works?</h3>
+                    </div>
+                    <div class="help-panel-body">
+                        <div class="help-section">
+                            <p>You put the <strong>service ID</strong> followed by <code>|</code> followed by the
+                                <strong>link</strong> followed by <code>|</code> followed by <strong>quantity</strong>
+                                on each line.</p>
+
+                            <p>To get the service ID of a service please check here: <a href="services.html"
+                                    class="help-link">Services List</a></p>
+                        </div>
+
+                        <div class="help-section">
+                            <p>Let's say you want to use the Mass Order to add Instagram Followers to your 3 accounts:
+                                user1, user2, user3</p>
+
+                            <p>From the Services List, the service ID for "Instagram Followers |100% Real - 30 Days
+                                Guarantee" is <strong>3740</strong></p>
+
+                            <p>Let's say you want to add 1000 followers for each account. The format will be:</p>
+
+                            <div class="format-badge">ID|Link|Quantity</div>
+                        </div>
+
+                        <div class="help-example">
+                            <div class="help-example-title">Example:</div>
+                            <ul class="help-example-list">
+                                <li>3740|https://instagram.com/user1|1000</li>
+                                <li>3740|https://instagram.com/user2|1000</li>
+                                <li>3740|https://instagram.com/user3|1000</li>
+                            </ul>
+                        </div>
+
+                        <div class="help-section" style="margin-top: var(--space-4);">
+                            <p><strong>Notes:</strong></p>
+                            <ul
+                                style="padding-left: var(--space-4); font-size: var(--text-sm); color: var(--text-secondary);">
+                                <li>One order per line</li>
+                                <li>Use the pipe character <code>|</code> as separator</li>
+                                <li>Make sure the service ID exists</li>
+                                <li>Quantity must be within min/max limits</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let allServices = [];
+        let serviceMap = {};
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!Auth.requireAuth()) return;
+
+            // Load services for validation
+            try {
+                allServices = await SMMApi.getServices();
+                serviceMap = {};
+                allServices.forEach(s => {
+                    serviceMap[s.service] = s;
+                });
+            } catch (error) {
+                console.error('Failed to load services:', error);
+            }
+
+            // Parse input on change
+            document.getElementById('massOrderInput').addEventListener('input', parseOrders);
+
+            // Submit
+            document.getElementById('submitMassOrder').addEventListener('click', submitMassOrder);
+        });
+
+        function parseOrders() {
+            const input = document.getElementById('massOrderInput').value.trim();
+            const lines = input.split('\n').filter(l => l.trim());
+
+            let validOrders = [];
+            let invalidCount = 0;
+            let totalCharge = 0;
+
+            lines.forEach(line => {
+                const parts = line.split('|').map(p => p.trim());
+
+                if (parts.length !== 3) {
+                    invalidCount++;
+                    return;
+                }
+
+                const [serviceId, link, quantity] = parts;
+                const service = serviceMap[parseInt(serviceId)];
+
+                if (!service) {
+                    invalidCount++;
+                    return;
+                }
+
+                const qty = parseInt(quantity);
+                if (!qty || qty < service.min || qty > service.max) {
+                    invalidCount++;
+                    return;
+                }
+
+                if (!link || link.length < 5) {
+                    invalidCount++;
+                    return;
+                }
+
+                const charge = SMMApi.calculateTotal(service.rate, qty);
+                totalCharge += charge;
+
+                validOrders.push({
+                    service: service.service,
+                    link: link,
+                    quantity: qty,
+                    charge: charge,
+                    serviceName: service.name
+                });
+            });
+
+            // Update summary
+            const summary = document.getElementById('orderSummary');
+            summary.style.display = lines.length > 0 ? 'block' : 'none';
+
+            document.getElementById('validOrdersCount').textContent = validOrders.length;
+            document.getElementById('invalidLinesCount').textContent = invalidCount;
+            document.getElementById('totalCharge').textContent = SMMApi.formatPrice(totalCharge);
+
+            return { validOrders, totalCharge };
+        }
+
+        async function submitMassOrder() {
+            const { validOrders, totalCharge } = parseOrders();
+
+            if (validOrders.length === 0) {
+                Notify.error('No valid orders to submit. Check the format.');
+                return;
+            }
+
+            const user = Storage.get('user');
+            if (!user || user.balance < totalCharge) {
+                Notify.error('Insufficient balance. Please add funds first.');
+                return;
+            }
+
+            const confirmed = await Notify.confirm(
+                `Submit ${validOrders.length} orders for ${SMMApi.formatPrice(totalCharge)}?`
+            );
+
+            if (!confirmed) return;
+
+            try {
+                Notify.info('Submitting orders...');
+
+                let successCount = 0;
+                let failCount = 0;
+                const orders = Storage.get('orders', []);
+
+                for (const order of validOrders) {
+                    try {
+                        const result = await SMMApi.createOrder({
+                            service: order.service,
+                            link: order.link,
+                            quantity: order.quantity
+                        });
+
+                        orders.unshift({
+                            id: result.order,
+                            service: order.serviceName,
+                            serviceId: order.service,
+                            link: order.link,
+                            quantity: order.quantity,
+                            charge: order.charge,
+                            status: 'Pending',
+                            date: new Date().toISOString()
+                        });
+
+                        successCount++;
+                    } catch (e) {
+                        failCount++;
+                        console.error('Order failed:', e);
+                    }
+
+                    // Small delay to avoid rate limiting
+                    await new Promise(r => setTimeout(r, 200));
+                }
+
+                // Deduct balance
+                user.balance -= totalCharge;
+                Storage.set('user', user);
+                Storage.set('orders', orders);
+
+                // Update display
+                document.getElementById('balanceDisplay').textContent = SMMApi.formatPrice(user.balance);
+
+                Notify.success(`${successCount} orders placed successfully!${failCount > 0 ? ` ${failCount} failed.` : ''}`);
+
+                // Clear input
+                document.getElementById('massOrderInput').value = '';
+                document.getElementById('orderSummary').style.display = 'none';
+
+            } catch (error) {
+                console.error('Mass order error:', error);
+                Notify.error('Failed to process mass order');
+            }
+        }
+    </script>
+</body>
+
+</html>

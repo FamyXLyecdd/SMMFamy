@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index" class="nav-link">Home</a></li>
+                    <li><a href="services" class="nav-link">Services</a></li>
+                    <li><a href="orders" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard" class="nav-link active">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <a href="login" class="btn btn-ghost">Sign In</a>
+                    <a href="register" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="app-page-header">
+                <div>
+                    <h1 class="app-page-title" id="welcomeMessage">Welcome back!</h1>
+                    <p class="app-page-subtitle">Here's an overview of your account</p>
+                </div>
+                <div class="quick-actions">
+                    <a href="services" class="btn btn-primary">New Order</a>
+                    <a href="funds" class="btn btn-secondary">Add Funds</a>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="dashboard-grid" style="margin-bottom: var(--space-8);">
+                <div class="card stat-card">
+                    <div class="stat-icon">P</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statBalance">P0.00</div>
+                        <div class="stat-label">Current Balance</div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon"
+                        style="background: linear-gradient(135deg, var(--color-info-500), var(--color-primary-500));">#
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statOrders">0</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon"
+                        style="background: linear-gradient(135deg, var(--color-success-500), var(--color-accent-500));">
+                        OK</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statCompleted">0</div>
+                        <div class="stat-label">Completed Orders</div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon"
+                        style="background: linear-gradient(135deg, var(--color-warning-500), var(--color-error-400));">$
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statSpent">P0.00</div>
+                        <div class="stat-label">Total Spent</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="dashboard-section">
+                <div class="dashboard-section-header">
+                    <h2 class="dashboard-section-title">Recent Orders</h2>
+                    <a href="orders" class="btn btn-ghost btn-sm">View All</a>
+                </div>
+                <div class="card" id="recentOrders">
+                    <div class="skeleton skeleton-card"></div>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="dashboard-section">
+                <h2 class="dashboard-section-title" style="margin-bottom: var(--space-4);">Quick Links</h2>
+                <div class="grid grid-cols-3 gap-4"
+                    style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <a href="services" class="card card-hover card-interactive"
+                        style="text-align: center; padding: var(--space-6);">
+                        <div class="card-icon"
+                            style="margin: 0 auto var(--space-3); background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));">
+                            +</div>
+                        <h4>New Order</h4>
+                        <p class="text-sm text-muted">Place a new order</p>
+                    </a>
+                    <a href="funds" class="card card-hover card-interactive"
+                        style="text-align: center; padding: var(--space-6);">
+                        <div class="card-icon"
+                            style="margin: 0 auto var(--space-3); background: linear-gradient(135deg, var(--color-success-500), var(--color-accent-500));">
+                            P</div>
+                        <h4>Add Funds</h4>
+                        <p class="text-sm text-muted">Top up your balance</p>
+                    </a>
+                    <a href="orders" class="card card-hover card-interactive"
+                        style="text-align: center; padding: var(--space-6);">
+                        <div class="card-icon"
+                            style="margin: 0 auto var(--space-3); background: linear-gradient(135deg, var(--color-info-500), var(--color-primary-500));">
+                            List</div>
+                        <h4>Order History</h4>
+                        <p class="text-sm text-muted">View all orders</p>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

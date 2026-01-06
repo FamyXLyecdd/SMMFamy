@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Maya QR Placeholder -->
+  <rect width="200" height="200" fill="white"/>
+  <rect x="10" y="10" width="180" height="180" rx="8" fill="#00D68F" fill-opacity="0.1" stroke="#00D68F" stroke-width="2"/>
+  
+  <!-- QR Pattern (Decorative) -->
+  <rect x="30" y="30" width="40" height="40" fill="#00D68F"/>
+  <rect x="35" y="35" width="30" height="30" fill="white"/>
+  <rect x="40" y="40" width="20" height="20" fill="#00D68F"/>
+  
+  <rect x="130" y="30" width="40" height="40" fill="#00D68F"/>
+  <rect x="135" y="35" width="30" height="30" fill="white"/>
+  <rect x="140" y="40" width="20" height="20" fill="#00D68F"/>
+  
+  <rect x="30" y="130" width="40" height="40" fill="#00D68F"/>
+  <rect x="35" y="135" width="30" height="30" fill="white"/>
+  <rect x="40" y="140" width="20" height="20" fill="#00D68F"/>
+  
+  <!-- Center Pattern -->
+  <rect x="80" y="80" width="40" height="40" fill="#00D68F" fill-opacity="0.3"/>
+  <rect x="90" y="90" width="20" height="20" fill="#00D68F"/>
+  
+  <!-- Random QR dots -->
+  <rect x="85" y="35" width="8" height="8" fill="#00D68F"/>
+  <rect x="100" y="35" width="8" height="8" fill="#00D68F"/>
+  <rect x="85" y="50" width="8" height="8" fill="#00D68F"/>
+  <rect x="100" y="50" width="8" height="8" fill="#00D68F"/>
+  <rect x="115" y="50" width="8" height="8" fill="#00D68F"/>
+  
+  <rect x="35" y="85" width="8" height="8" fill="#00D68F"/>
+  <rect x="50" y="85" width="8" height="8" fill="#00D68F"/>
+  <rect x="35" y="100" width="8" height="8" fill="#00D68F"/>
+  <rect x="50" y="100" width="8" height="8" fill="#00D68F"/>
+  <rect x="50" y="115" width="8" height="8" fill="#00D68F"/>
+  
+  <rect x="135" y="85" width="8" height="8" fill="#00D68F"/>
+  <rect x="150" y="85" width="8" height="8" fill="#00D68F"/>
+  <rect x="135" y="100" width="8" height="8" fill="#00D68F"/>
+  <rect x="150" y="100" width="8" height="8" fill="#00D68F"/>
+  <rect x="150" y="115" width="8" height="8" fill="#00D68F"/>
+  
+  <rect x="85" y="135" width="8" height="8" fill="#00D68F"/>
+  <rect x="100" y="135" width="8" height="8" fill="#00D68F"/>
+  <rect x="85" y="150" width="8" height="8" fill="#00D68F"/>
+  <rect x="100" y="150" width="8" height="8" fill="#00D68F"/>
+  <rect x="115" y="150" width="8" height="8" fill="#00D68F"/>
+</svg>

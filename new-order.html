@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Place a new order - SMMFamy SMM Panel">
+    <title>New Order - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .order-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .order-form-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-default);
+            overflow: hidden;
+        }
+
+        .order-form-header {
+            padding: var(--space-6);
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-secondary-50));
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .order-form-header h1 {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-1);
+        }
+
+        .order-form-body {
+            padding: var(--space-6);
+        }
+
+        .service-selector {
+            margin-bottom: var(--space-6);
+        }
+
+        .service-category-tabs {
+            display: flex;
+            gap: var(--space-2);
+            overflow-x: auto;
+            padding-bottom: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .category-tab {
+            padding: var(--space-2) var(--space-4);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .category-tab:hover {
+            border-color: var(--color-primary-300);
+        }
+
+        .category-tab.active {
+            background: var(--color-primary-500);
+            color: white;
+            border-color: var(--color-primary-500);
+        }
+
+        .service-select-wrapper {
+            position: relative;
+        }
+
+        .service-select-wrapper .form-select {
+            padding-right: var(--space-10);
+        }
+
+        .service-details {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin-top: var(--space-4);
+            display: none;
+        }
+
+        .service-details.visible {
+            display: block;
+        }
+
+        .service-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-2) 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .service-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .service-detail-label {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+        }
+
+        .service-detail-value {
+            font-weight: var(--font-semibold);
+        }
+
+        .link-input-wrapper {
+            position: relative;
+        }
+
+        .link-validate-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .link-validation {
+            margin-top: var(--space-2);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            display: none;
+        }
+
+        .link-validation.valid {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: var(--color-success-50);
+            color: var(--color-success-700);
+        }
+
+        .link-validation.invalid {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: var(--color-error-50);
+            color: var(--color-error-700);
+        }
+
+        .quantity-wrapper {
+            display: flex;
+            gap: var(--space-3);
+            align-items: flex-end;
+        }
+
+        .quantity-wrapper .form-group {
+            flex: 1;
+        }
+
+        .quick-quantity {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .quick-quantity button {
+            padding: var(--space-2) var(--space-3);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .quick-quantity button:hover {
+            background: var(--color-primary-50);
+            border-color: var(--color-primary-300);
+        }
+
+        .order-summary {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-secondary-50));
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-top: var(--space-6);
+        }
+
+        .order-summary h3 {
+            margin-bottom: var(--space-4);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-2) 0;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid var(--border-default);
+            margin-top: var(--space-3);
+            padding-top: var(--space-3);
+            font-size: var(--text-lg);
+            font-weight: var(--font-bold);
+        }
+
+        .balance-check {
+            margin-top: var(--space-4);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+        }
+
+        .balance-check.sufficient {
+            background: var(--color-success-50);
+            color: var(--color-success-700);
+        }
+
+        .balance-check.insufficient {
+            background: var(--color-error-50);
+            color: var(--color-error-700);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: var(--space-3);
+            margin-top: var(--space-6);
+        }
+
+        .order-actions .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 640px) {
+            .quantity-wrapper {
+                flex-direction: column;
+            }
+
+            .quick-quantity {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <span class="balance-display" id="balanceDisplay">₱0.00</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="order-form-container">
+                <div class="order-form-card">
+                    <div class="order-form-header">
+                        <h1>Place New Order</h1>
+                        <p class="text-muted">Choose a service and fill in the details below</p>
+                    </div>
+
+                    <div class="order-form-body">
+                        <form id="newOrderForm">
+                            <!-- Category Tabs -->
+                            <div class="service-selector">
+                                <div class="service-category-tabs" id="categoryTabs">
+                                    <button type="button" class="category-tab active" data-category="all">All</button>
+                                    <button type="button" class="category-tab"
+                                        data-category="instagram">Instagram</button>
+                                    <button type="button" class="category-tab"
+                                        data-category="facebook">Facebook</button>
+                                    <button type="button" class="category-tab" data-category="tiktok">TikTok</button>
+                                    <button type="button" class="category-tab" data-category="youtube">YouTube</button>
+                                    <button type="button" class="category-tab" data-category="twitter">Twitter</button>
+                                    <button type="button" class="category-tab"
+                                        data-category="telegram">Telegram</button>
+                                </div>
+
+                                <!-- Service Select -->
+                                <div class="form-group">
+                                    <label class="form-label">Select Service</label>
+                                    <div class="service-select-wrapper">
+                                        <select class="form-select" id="serviceSelect" required>
+                                            <option value="">Choose a service...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Service Details -->
+                                <div class="service-details" id="serviceDetails">
+                                    <div class="service-detail-row">
+                                        <span class="service-detail-label">Service ID</span>
+                                        <span class="service-detail-value" id="detailId">-</span>
+                                    </div>
+                                    <div class="service-detail-row">
+                                        <span class="service-detail-label">Price per 1000</span>
+                                        <span class="service-detail-value" id="detailPrice">-</span>
+                                    </div>
+                                    <div class="service-detail-row">
+                                        <span class="service-detail-label">Min - Max Order</span>
+                                        <span class="service-detail-value" id="detailMinMax">-</span>
+                                    </div>
+                                    <div class="service-detail-row">
+                                        <span class="service-detail-label">Average Speed</span>
+                                        <span class="service-detail-value" id="detailSpeed">-</span>
+                                    </div>
+                                    <div class="service-detail-row">
+                                        <span class="service-detail-label">Refill</span>
+                                        <span class="service-detail-value" id="detailRefill">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Link Input -->
+                            <div class="form-group">
+                                <label class="form-label">Link</label>
+                                <div class="link-input-wrapper">
+                                    <input type="url" class="form-input" id="linkInput"
+                                        placeholder="Enter the link (e.g., https://instagram.com/p/...)" required>
+                                </div>
+                                <div class="link-validation" id="linkValidation">
+                                    <span class="validation-icon"></span>
+                                    <span class="validation-text"></span>
+                                </div>
+                                <div class="form-helper">Make sure your account/post is set to public</div>
+                            </div>
+
+                            <!-- Quantity Input -->
+                            <div class="form-group">
+                                <label class="form-label">Quantity</label>
+                                <div class="quantity-wrapper">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <input type="number" class="form-input" id="quantityInput"
+                                            placeholder="Enter quantity" required>
+                                    </div>
+                                    <div class="quick-quantity">
+                                        <button type="button" data-qty="100">100</button>
+                                        <button type="button" data-qty="500">500</button>
+                                        <button type="button" data-qty="1000">1K</button>
+                                        <button type="button" data-qty="5000">5K</button>
+                                        <button type="button" data-qty="10000">10K</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary -->
+                            <div class="order-summary">
+                                <h3>Order Summary</h3>
+                                <div class="summary-row">
+                                    <span>Service</span>
+                                    <span id="summaryService">-</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Quantity</span>
+                                    <span id="summaryQuantity">0</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Price per 1000</span>
+                                    <span id="summaryRate">₱0.00</span>
+                                </div>
+                                <div class="summary-row total">
+                                    <span>Total Cost</span>
+                                    <span id="summaryTotal">₱0.00</span>
+                                </div>
+
+                                <div class="balance-check" id="balanceCheck">
+                                    <span class="balance-icon"></span>
+                                    <span class="balance-text"></span>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="order-actions">
+                                <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="submitOrder">
+                                    Place Order
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let services = [];
+        let selectedService = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!Auth.requireAuth()) return;
+
+            // Load services
+            try {
+                const response = await SMMApi.getServices();
+                services = response.services || [];
+                populateServices(services);
+            } catch (error) {
+                Notify.error('Failed to load services');
+            }
+
+            // Category tabs
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    filterServicesByCategory(tab.dataset.category);
+                });
+            });
+
+            // Service select
+            document.getElementById('serviceSelect').addEventListener('change', (e) => {
+                const serviceId = e.target.value;
+                selectedService = services.find(s => s.id == serviceId);
+                updateServiceDetails();
+                updateSummary();
+            });
+
+            // Quick quantity buttons
+            document.querySelectorAll('.quick-quantity button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('quantityInput').value = btn.dataset.qty;
+                    updateSummary();
+                });
+            });
+
+            // Quantity input
+            document.getElementById('quantityInput').addEventListener('input', () => {
+                updateSummary();
+            });
+
+            // Link validation
+            document.getElementById('linkInput').addEventListener('blur', validateLink);
+
+            // Form submit
+            document.getElementById('newOrderForm').addEventListener('submit', handleSubmit);
+
+            // Check for preset service from URL
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('service')) {
+                document.getElementById('serviceSelect').value = params.get('service');
+                selectedService = services.find(s => s.id == params.get('service'));
+                updateServiceDetails();
+            }
+            if (params.get('link')) {
+                document.getElementById('linkInput').value = decodeURIComponent(params.get('link'));
+            }
+        });
+
+        function populateServices(serviceList) {
+            const select = document.getElementById('serviceSelect');
+            select.innerHTML = '<option value="">Choose a service...</option>' +
+                serviceList.map(s => `
+                    <option value="${s.id}">${s.id} - ${s.name} (${SMMApi.formatPrice(s.rate)}/1K)</option>
+                `).join('');
+        }
+
+        function filterServicesByCategory(category) {
+            const filtered = category === 'all'
+                ? services
+                : services.filter(s => s.category?.toLowerCase().includes(category));
+            populateServices(filtered);
+        }
+
+        function updateServiceDetails() {
+            const detailsEl = document.getElementById('serviceDetails');
+
+            if (!selectedService) {
+                detailsEl.classList.remove('visible');
+                return;
+            }
+
+            detailsEl.classList.add('visible');
+            document.getElementById('detailId').textContent = selectedService.id;
+            document.getElementById('detailPrice').textContent = SMMApi.formatPrice(selectedService.rate);
+            document.getElementById('detailMinMax').textContent = `${selectedService.min?.toLocaleString()} - ${selectedService.max?.toLocaleString()}`;
+            document.getElementById('detailSpeed').textContent = selectedService.speed || 'Varies';
+            document.getElementById('detailRefill').textContent = selectedService.refill ? 'Yes ✓' : 'No';
+
+            // Set quantity limits
+            const qtyInput = document.getElementById('quantityInput');
+            qtyInput.min = selectedService.min || 10;
+            qtyInput.max = selectedService.max || 100000;
+            qtyInput.placeholder = `Min: ${selectedService.min}, Max: ${selectedService.max}`;
+        }
+
+        function updateSummary() {
+            const quantity = parseInt(document.getElementById('quantityInput').value) || 0;
+            const balance = Auth.getBalance();
+
+            document.getElementById('summaryService').textContent = selectedService
+                ? Utils.truncate(selectedService.name, 30)
+                : '-';
+            document.getElementById('summaryQuantity').textContent = quantity.toLocaleString();
+            document.getElementById('summaryRate').textContent = selectedService
+                ? SMMApi.formatPrice(selectedService.rate)
+                : '₱0.00';
+
+            const total = selectedService
+                ? (quantity / 1000) * selectedService.rate
+                : 0;
+            document.getElementById('summaryTotal').textContent = SMMApi.formatPrice(total);
+
+            // Balance check
+            const balanceCheck = document.getElementById('balanceCheck');
+            if (total > 0) {
+                if (balance >= total) {
+                    balanceCheck.className = 'balance-check sufficient';
+                    balanceCheck.innerHTML = `✓ Your balance (${SMMApi.formatPrice(balance)}) is sufficient`;
+                } else {
+                    balanceCheck.className = 'balance-check insufficient';
+                    balanceCheck.innerHTML = `✗ Insufficient balance (${SMMApi.formatPrice(balance)}). <a href="funds.html">Add funds</a>`;
+                }
+            } else {
+                balanceCheck.className = 'balance-check';
+                balanceCheck.innerHTML = '';
+            }
+        }
+
+        function validateLink() {
+            const link = document.getElementById('linkInput').value;
+            const validation = document.getElementById('linkValidation');
+
+            if (!link) {
+                validation.className = 'link-validation';
+                return;
+            }
+
+            try {
+                const url = new URL(link);
+                const validDomains = ['instagram.com', 'facebook.com', 'tiktok.com', 'youtube.com', 'twitter.com', 'x.com', 't.me', 'telegram.me'];
+                const isValid = validDomains.some(d => url.hostname.includes(d));
+
+                if (isValid) {
+                    validation.className = 'link-validation valid';
+                    validation.innerHTML = '✓ Link looks valid';
+                } else {
+                    validation.className = 'link-validation invalid';
+                    validation.innerHTML = '⚠ Unrecognized domain - verify the link is correct';
+                }
+            } catch {
+                validation.className = 'link-validation invalid';
+                validation.innerHTML = '✗ Invalid URL format';
+            }
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            if (!selectedService) {
+                Notify.error('Please select a service');
+                return;
+            }
+
+            const link = document.getElementById('linkInput').value.trim();
+            const quantity = parseInt(document.getElementById('quantityInput').value);
+
+            if (!link) {
+                Notify.error('Please enter a link');
+                return;
+            }
+
+            if (!quantity || quantity < selectedService.min || quantity > selectedService.max) {
+                Notify.error(`Quantity must be between ${selectedService.min} and ${selectedService.max}`);
+                return;
+            }
+
+            const total = (quantity / 1000) * selectedService.rate;
+            const balance = Auth.getBalance();
+
+            if (balance < total) {
+                Notify.error('Insufficient balance. Please add funds.');
+                return;
+            }
+
+            // Confirm order
+            const confirmed = await Notify.confirm(
+                `Place order for ${quantity.toLocaleString()} ${selectedService.name} for ${SMMApi.formatPrice(total)}?`
+            );
+
+            if (!confirmed) return;
+
+            try {
+                const submitBtn = document.getElementById('submitOrder');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Processing...';
+
+                const result = await SMMApi.createOrder(selectedService.id, link, quantity);
+
+                if (result.order) {
+                    // Deduct balance
+                    Auth.updateBalance(-total);
+
+                    Notify.success('Order placed successfully!');
+                    window.location.href = `order-details.html?id=${result.order.id}`;
+                } else {
+                    throw new Error(result.error || 'Order failed');
+                }
+            } catch (error) {
+                Notify.error(error.message || 'Failed to place order');
+            } finally {
+                const submitBtn = document.getElementById('submitOrder');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Place Order';
+            }
+        }
+    </script>
+</body>
+
+</html>

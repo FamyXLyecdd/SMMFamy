@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frequently asked questions about SMMFamy SMM Panel services.">
+    <title>FAQ - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .faq-section {
+            margin-bottom: var(--space-8);
+        }
+
+        .faq-section-title {
+            font-size: var(--text-xl);
+            font-weight: var(--font-bold);
+            color: var(--color-primary-600);
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-2);
+            border-bottom: 2px solid var(--color-primary-100);
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-3);
+            overflow: hidden;
+            border: 1px solid var(--border-default);
+            transition: var(--transition-fast);
+        }
+
+        .faq-item:hover {
+            border-color: var(--color-primary-200);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4);
+            cursor: pointer;
+            font-weight: var(--font-semibold);
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-surface);
+        }
+
+        .faq-icon {
+            font-size: var(--text-xl);
+            color: var(--color-primary-500);
+            transition: transform var(--transition-fast);
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 var(--space-4);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            padding: 0 var(--space-4) var(--space-4);
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .faq-answer ul {
+            margin: var(--space-2) 0;
+            padding-left: var(--space-6);
+        }
+
+        .faq-answer li {
+            margin-bottom: var(--space-1);
+            color: var(--text-secondary);
+        }
+
+        .faq-search {
+            margin-bottom: var(--space-6);
+        }
+
+        .faq-search input {
+            font-size: var(--text-lg);
+            padding: var(--space-4);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <a href="login.html" class="btn btn-ghost">Sign In</a>
+                    <a href="register.html" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="app-page-header" style="text-align: center;">
+                <div>
+                    <h1 class="app-page-title">Frequently Asked Questions</h1>
+                    <p class="app-page-subtitle">Find answers to common questions about our services</p>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="faq-search">
+                <input type="text" class="form-input" id="faqSearch" placeholder="Search for answers...">
+            </div>
+
+            <!-- General Questions -->
+            <div class="faq-section" id="generalSection">
+                <h2 class="faq-section-title">General Questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is SMMFamy?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>SMMFamy is a Social Media Marketing (SMM) panel that provides affordable services to help
+                            grow your social media presence. We offer followers, likes, views, comments, and more for
+                            popular platforms like Instagram, TikTok, YouTube, Facebook, Twitter, and many others.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is it safe to use SMMFamy?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Our services are 100% safe to use. We use proven methods that comply with social media
+                            platform guidelines. We never ask for your passwords - you only need to provide your profile
+                            or post link.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How quickly will I see results?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most orders start processing within minutes and complete within 24-72 hours depending on the
+                            service and quantity. Some services are instant delivery while others use gradual/drip-feed
+                            delivery for a more natural look.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you offer refunds?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer refunds in the following cases:</p>
+                        <ul>
+                            <li>Order not processed within 48 hours</li>
+                            <li>Wrong link submitted (before order starts)</li>
+                            <li>Service unavailable after payment</li>
+                        </ul>
+                        <p>Please note that once an order is completed or partially completed, refunds may only be
+                            partial based on the remaining quantity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Questions -->
+            <div class="faq-section" id="paymentSection">
+                <h2 class="faq-section-title">Payment Questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We currently accept the following payment methods:</p>
+                        <ul>
+                            <li><strong>GCash</strong> - The most popular e-wallet in the Philippines</li>
+                            <li><strong>Maya (PayMaya)</strong> - Another widely used e-wallet</li>
+                        </ul>
+                        <p>We're working on adding more payment options including bank transfers and credit cards.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I add funds to my account?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To add funds:</p>
+                        <ul>
+                            <li>Go to the "Add Funds" page</li>
+                            <li>Enter the amount you want to add (minimum ₱50)</li>
+                            <li>Select your payment method (GCash or Maya)</li>
+                            <li>Send the exact amount to the displayed number</li>
+                            <li>Take a screenshot of your payment</li>
+                            <li>Click "I've Paid" and contact us on Messenger with the screenshot</li>
+                        </ul>
+                        <p>Your funds will be credited within 5-30 minutes after verification.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is the minimum deposit amount?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The minimum deposit amount is <strong>₱50</strong>. There is no maximum limit, but for large
+                            deposits (over ₱10,000), please contact us first.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How long does it take to credit my payment?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>After you send proof of payment via Messenger, your funds will typically be credited within:
+                        </p>
+                        <ul>
+                            <li><strong>5-15 minutes</strong> during business hours (9 AM - 10 PM)</li>
+                            <li><strong>30-60 minutes</strong> outside business hours</li>
+                        </ul>
+                        <p>Please be patient and avoid sending multiple messages. We process payments as quickly as
+                            possible!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Questions -->
+            <div class="faq-section" id="serviceSection">
+                <h2 class="faq-section-title">Service Questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is the difference between different service types?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We offer several types of services:</p>
+                        <ul>
+                            <li><strong>Real/Organic</strong> - Real accounts from active users (highest quality)</li>
+                            <li><strong>High Quality (HQ)</strong> - Good quality accounts with profile pictures</li>
+                            <li><strong>Mixed</strong> - Combination of real and bot accounts (best value)</li>
+                            <li><strong>Bot</strong> - Automated accounts (cheapest, lowest quality)</li>
+                            <li><strong>With Refill</strong> - Free replacement if followers drop</li>
+                        </ul>
+                        <p>Choose based on your budget and quality requirements.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What does "Refill" mean?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Refill</strong> means we will replace any followers/likes that drop within a
+                            specified period (usually 30 days). If you notice a significant drop, you can request a free
+                            refill through the Orders page. This ensures you always get what you paid for!</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is Drip Feed?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Drip Feed</strong> is a feature that gradually delivers your order over a period of
+                            time instead of all at once. This makes the growth look more natural and is less likely to
+                            trigger spam filters. For example, instead of getting 1000 followers in one hour, you can
+                            spread it over 24 hours.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>My order is stuck on "Pending". What should I do?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If your order has been pending for more than 24 hours:</p>
+                        <ul>
+                            <li>Check if your profile/post is public (private accounts won't work)</li>
+                            <li>Verify the link is correct and accessible</li>
+                            <li>Contact our support via the Tickets page</li>
+                        </ul>
+                        <p>We'll investigate and either complete the order or issue a refund.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I cancel my order?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Orders can only be canceled if they haven't started processing yet. Once an order starts, it
+                            cannot be canceled. If you need to cancel a pending order, please contact support
+                            immediately through the Tickets page.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Questions -->
+            <div class="faq-section" id="accountSection">
+                <h2 class="faq-section-title">Account Questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do I need my Instagram/TikTok password?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>No!</strong> We NEVER ask for your passwords. We only need the link to your profile
+                            or post. Anyone asking for your password is a scammer. Our services work without requiring
+                            access to your account.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Will my account get banned?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our services are designed to be safe and undetectable. We use gradual delivery and
+                            real-looking accounts to minimize any risk. However, to be extra safe:</p>
+                        <ul>
+                            <li>Don't order huge quantities all at once</li>
+                            <li>Use drip-feed for larger orders</li>
+                            <li>Maintain natural activity on your account</li>
+                            <li>Don't change your username while orders are processing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>I forgot my password. How do I reset it?</span>
+                        <span class="faq-icon">↓</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Currently, you can reset your password by contacting support via Messenger. We're working on
+                            an automated password reset feature. Please have your email and recent order details ready
+                            for verification.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Still need help? -->
+            <div class="card text-center" style="margin-top: var(--space-8); padding: var(--space-8);">
+                <h3>Still have questions?</h3>
+                <p class="text-muted" style="margin-bottom: var(--space-4);">Our support team is here to help you 24/7
+                </p>
+                <div class="flex gap-4 justify-center">
+                    <a href="tickets.html" class="btn btn-primary">Create Support Ticket</a>
+                    <a href="https://m.me/smmfamy" target="_blank" class="btn btn-secondary">Chat on Messenger</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p>2026 SMMFamy. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // FAQ accordion
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.parentElement;
+                    item.classList.toggle('open');
+                });
+            });
+
+            // FAQ search
+            const searchInput = document.getElementById('faqSearch');
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase();
+
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+
+                    if (question.includes(query) || answer.includes(query)) {
+                        item.style.display = 'block';
+                        if (query.length > 2) {
+                            item.classList.add('open');
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Show/hide sections based on visible items
+                document.querySelectorAll('.faq-section').forEach(section => {
+                    const visibleItems = section.querySelectorAll('.faq-item[style="display: block;"], .faq-item:not([style])');
+                    const hasHiddenItems = section.querySelectorAll('.faq-item[style="display: none;"]').length;
+
+                    if (query && hasHiddenItems === section.querySelectorAll('.faq-item').length) {
+                        section.style.display = 'none';
+                    } else {
+                        section.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+{
+    "name": "smmfamy",
+    "version": "1.0.0",
+    "description": "SMM Panel - Social Media Marketing Services",
+    "main": "index.html",
+    "scripts": {
+        "dev": "concurrently \"node proxy-server.js\" \"npx serve . -p 8080\"",
+        "proxy": "node proxy-server.js",
+        "serve": "npx serve . -p 8080",
+        "deploy": "vercel --prod"
+    },
+    "keywords": [
+        "smm",
+        "social-media",
+        "marketing",
+        "panel"
+    ],
+    "author": "SMMFamy",
+    "license": "MIT",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "concurrently": "^8.2.0",
+        "serve": "^14.2.0"
+    }
+}

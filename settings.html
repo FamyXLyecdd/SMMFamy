@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Account Settings - Manage your SMMFamy account preferences">
+    <title>Settings - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .settings-header {
+            margin-bottom: var(--space-6);
+        }
+
+        .settings-header h1 {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-1);
+        }
+
+        .settings-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-default);
+            margin-bottom: var(--space-6);
+            overflow: hidden;
+        }
+
+        .settings-section-header {
+            padding: var(--space-4) var(--space-6);
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .settings-section-header h2 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-1);
+        }
+
+        .settings-section-header p {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .settings-section-body {
+            padding: var(--space-6);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4) 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .setting-item:first-child {
+            padding-top: 0;
+        }
+
+        .setting-info h3 {
+            font-size: var(--text-base);
+            margin-bottom: var(--space-1);
+        }
+
+        .setting-info p {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .setting-control {
+            flex-shrink: 0;
+        }
+
+        /* Toggle switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: var(--bg-muted);
+            border-radius: var(--radius-full);
+            transition: var(--transition-fast);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background: var(--color-primary-500);
+        }
+
+        .toggle-switch input:checked+.toggle-slider::before {
+            transform: translateX(22px);
+        }
+
+        .toggle-switch input:focus+.toggle-slider {
+            box-shadow: 0 0 0 3px var(--color-primary-100);
+        }
+
+        .danger-zone {
+            border-color: var(--color-error-200);
+        }
+
+        .danger-zone .settings-section-header {
+            background: var(--color-error-50);
+            border-bottom-color: var(--color-error-200);
+        }
+
+        .danger-zone h2 {
+            color: var(--color-error-600);
+        }
+
+        @media (max-width: 640px) {
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-3);
+            }
+
+            .setting-control {
+                width: 100%;
+            }
+
+            .setting-control .form-select,
+            .setting-control .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <span class="balance-display" id="balanceDisplay">₱0.00</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="settings-container">
+                <div class="settings-header">
+                    <a href="profile.html" class="btn btn-ghost mb-4">← Back to Profile</a>
+                    <h1>Account Settings</h1>
+                    <p class="text-muted">Manage your account preferences and settings</p>
+                </div>
+
+                <!-- Appearance -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <h2>🎨 Appearance</h2>
+                        <p>Customize how SMMFamy looks for you</p>
+                    </div>
+                    <div class="settings-section-body">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Theme</h3>
+                                <p>Choose between light and dark mode</p>
+                            </div>
+                            <div class="setting-control">
+                                <select class="form-select" id="themeSelect">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="auto">System Default</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Language</h3>
+                                <p>Select your preferred language</p>
+                            </div>
+                            <div class="setting-control">
+                                <select class="form-select" id="languageSelect">
+                                    <option value="en">English</option>
+                                    <option value="tl">Tagalog</option>
+                                    <option value="es">Español</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Currency Display</h3>
+                                <p>Choose how prices are displayed</p>
+                            </div>
+                            <div class="setting-control">
+                                <select class="form-select" id="currencySelect">
+                                    <option value="PHP">₱ PHP</option>
+                                    <option value="USD">$ USD</option>
+                                    <option value="EUR">€ EUR</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <h2>🔔 Notifications</h2>
+                        <p>Control how you receive updates</p>
+                    </div>
+                    <div class="settings-section-body">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Email Notifications</h3>
+                                <p>Receive updates about your orders via email</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailNotifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Push Notifications</h3>
+                                <p>Get browser notifications for important updates</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="pushNotifications">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Marketing Emails</h3>
+                                <p>Receive promotions and special offers</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="marketingEmails">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Order Status Updates</h3>
+                                <p>Get notified when order status changes</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="orderUpdates" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <h2>🔒 Privacy & Security</h2>
+                        <p>Manage your privacy settings</p>
+                    </div>
+                    <div class="settings-section-body">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Two-Factor Authentication</h3>
+                                <p>Add an extra layer of security to your account</p>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn btn-secondary" id="setup2FA">Setup 2FA</button>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Session Timeout</h3>
+                                <p>Auto-logout after inactivity</p>
+                            </div>
+                            <div class="setting-control">
+                                <select class="form-select" id="sessionTimeout">
+                                    <option value="15">15 minutes</option>
+                                    <option value="30" selected>30 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="never">Never</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Login History</h3>
+                                <p>Keep track of login activity</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="loginHistory" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Data Export</h3>
+                                <p>Download all your data</p>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn btn-secondary" id="exportData">Export Data</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Settings -->
+                <div class="settings-section">
+                    <div class="settings-section-header">
+                        <h2>🔧 API Settings</h2>
+                        <p>Manage your API access</p>
+                    </div>
+                    <div class="settings-section-body">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>API Access</h3>
+                                <p>Enable or disable API access for your account</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="apiAccess" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>API Rate Limit</h3>
+                                <p>Maximum requests per minute</p>
+                            </div>
+                            <div class="setting-control">
+                                <select class="form-select" id="apiRateLimit">
+                                    <option value="30">30 requests/min</option>
+                                    <option value="60" selected>60 requests/min</option>
+                                    <option value="100">100 requests/min</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Webhook URL</h3>
+                                <p>Receive order updates via webhook</p>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn btn-secondary" id="configureWebhook">Configure</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="settings-section danger-zone">
+                    <div class="settings-section-header">
+                        <h2>⚠️ Danger Zone</h2>
+                        <p>Irreversible actions - proceed with caution</p>
+                    </div>
+                    <div class="settings-section-body">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Clear Order History</h3>
+                                <p>Permanently delete all order records</p>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn btn-error" id="clearHistory">Clear History</button>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Delete Account</h3>
+                                <p>Permanently delete your account and all data</p>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn btn-error" id="deleteAccount">Delete Account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button class="btn btn-primary btn-lg" id="saveSettings">Save All Changes</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!Auth.requireAuth()) return;
+
+            // Load saved settings
+            const settings = Storage.get('settings', {});
+
+            if (settings.theme) document.getElementById('themeSelect').value = settings.theme;
+            if (settings.language) document.getElementById('languageSelect').value = settings.language;
+            if (settings.currency) document.getElementById('currencySelect').value = settings.currency;
+
+            // Theme change handler
+            document.getElementById('themeSelect').addEventListener('change', (e) => {
+                if (window.DarkMode) {
+                    if (e.target.value === 'auto') {
+                        localStorage.removeItem('smmfamy_theme');
+                        DarkMode.init();
+                    } else {
+                        DarkMode.setTheme(e.target.value);
+                    }
+                }
+            });
+
+            // 2FA setup
+            document.getElementById('setup2FA').addEventListener('click', () => {
+                Notify.info('2FA setup coming soon!');
+            });
+
+            // Export data
+            document.getElementById('exportData').addEventListener('click', () => {
+                const data = {
+                    user: Storage.get('user'),
+                    orders: Storage.get('orders', []),
+                    settings: Storage.get('settings', {}),
+                    exportedAt: new Date().toISOString()
+                };
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'smmfamy_data_export.json';
+                a.click();
+
+                Notify.success('Data exported successfully');
+            });
+
+            // Clear history
+            document.getElementById('clearHistory').addEventListener('click', async () => {
+                const confirmed = await Notify.confirm('Are you sure you want to clear all order history? This cannot be undone.');
+                if (confirmed) {
+                    Storage.set('orders', []);
+                    Notify.success('Order history cleared');
+                }
+            });
+
+            // Delete account
+            document.getElementById('deleteAccount').addEventListener('click', async () => {
+                const confirmed = await Notify.confirm('Are you absolutely sure? This will permanently delete your account and all associated data.');
+                if (confirmed) {
+                    const doubleConfirm = await Notify.confirm('This action is IRREVERSIBLE. Type "DELETE" to confirm.');
+                    if (doubleConfirm) {
+                        // Clear all data
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        Notify.success('Account deleted. Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 2000);
+                    }
+                }
+            });
+
+            // Save settings
+            document.getElementById('saveSettings').addEventListener('click', () => {
+                const newSettings = {
+                    theme: document.getElementById('themeSelect').value,
+                    language: document.getElementById('languageSelect').value,
+                    currency: document.getElementById('currencySelect').value,
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    pushNotifications: document.getElementById('pushNotifications').checked,
+                    marketingEmails: document.getElementById('marketingEmails').checked,
+                    orderUpdates: document.getElementById('orderUpdates').checked,
+                    sessionTimeout: document.getElementById('sessionTimeout').value,
+                    loginHistory: document.getElementById('loginHistory').checked,
+                    apiAccess: document.getElementById('apiAccess').checked,
+                    apiRateLimit: document.getElementById('apiRateLimit').value
+                };
+
+                Storage.set('settings', newSettings);
+                Notify.success('Settings saved successfully!');
+            });
+        });
+    </script>
+</body>
+
+</html>

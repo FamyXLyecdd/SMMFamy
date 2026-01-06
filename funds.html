@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Funds - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index" class="nav-link">Home</a></li>
+                    <li><a href="services" class="nav-link">Services</a></li>
+                    <li><a href="orders" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard" class="nav-link">Dashboard</a></li>
+                    <li><a href="funds" class="nav-link active">Add Funds</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <a href="login" class="btn btn-ghost">Sign In</a>
+                    <a href="register" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="app-page-header">
+                <div>
+                    <h1 class="app-page-title">Add Funds</h1>
+                    <p class="app-page-subtitle">Top up your balance via GCash or Maya</p>
+                </div>
+            </div>
+
+            <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                <!-- Current Balance Card -->
+                <div class="card" style="text-align: center; padding: var(--space-8);">
+                    <p class="text-muted">Current Balance</p>
+                    <div style="font-size: var(--text-4xl); font-weight: var(--font-extrabold); color: var(--color-primary-600); margin: var(--space-2) 0;"
+                        id="currentBalance">P0.00</div>
+                    <a href="services.html" class="btn btn-secondary btn-sm">Place Order</a>
+                </div>
+
+                <!-- Add Funds Form -->
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: var(--space-4);">Add Funds</h3>
+
+                    <!-- Quick Amounts -->
+                    <div class="form-group">
+                        <label class="form-label">Quick Select</label>
+                        <div class="amount-buttons" id="quickAmounts">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Custom Amount -->
+                    <div class="form-group">
+                        <label class="form-label form-label-required">Amount (PHP)</label>
+                        <div class="input-group">
+                            <span class="input-group-icon">P</span>
+                            <input type="number" class="form-input" id="fundAmount" min="50" step="1"
+                                placeholder="Enter amount" value="100">
+                        </div>
+                        <div class="form-helper">Minimum: P50</div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="form-group">
+                        <label class="form-label form-label-required">Payment Method</label>
+                        <div class="payment-methods" id="paymentMethods">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg btn-block" id="addFundsBtn">
+                        Continue to Payment
+                    </button>
+
+                    <div class="alert alert-info" style="margin-top: var(--space-4);">
+                        <div class="alert-content">
+                            <div class="alert-title">How it works</div>
+                            <p>After clicking continue, you'll see payment instructions. Send the exact amount via
+                                GCash/Maya, then contact us on Messenger with your payment screenshot.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="card" style="margin-top: var(--space-8);">
+                <h3 class="card-title" style="margin-bottom: var(--space-4);">Recent Transactions</h3>
+                <div id="transactionHistory">
+                    <div class="empty-state" style="padding: var(--space-6);">
+                        <p class="text-muted">No transactions yet</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

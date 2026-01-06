@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Transaction History - View your payment and order transactions">
+    <title>Transaction History - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+
+        .transaction-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            padding: var(--space-5);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-default);
+        }
+
+        .summary-card-label {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+            margin-bottom: var(--space-1);
+        }
+
+        .summary-card-value {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+        }
+
+        .summary-card-value.positive {
+            color: var(--color-success-600);
+        }
+
+        .summary-card-value.negative {
+            color: var(--color-error-600);
+        }
+
+        .transaction-filters {
+            display: flex;
+            gap: var(--space-3);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-4);
+        }
+
+        .transaction-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-default);
+            overflow: hidden;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--border-light);
+            transition: var(--transition-fast);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-item:hover {
+            background: var(--bg-surface);
+        }
+
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .transaction-icon.deposit {
+            background: var(--color-success-100);
+            color: var(--color-success-600);
+        }
+
+        .transaction-icon.order {
+            background: var(--color-primary-100);
+            color: var(--color-primary-600);
+        }
+
+        .transaction-icon.refund {
+            background: var(--color-info-100);
+            color: var(--color-info-600);
+        }
+
+        .transaction-icon.bonus {
+            background: var(--color-warning-100);
+            color: var(--color-warning-600);
+        }
+
+        .transaction-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .transaction-title {
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-1);
+        }
+
+        .transaction-meta {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .transaction-amount {
+            text-align: right;
+        }
+
+        .transaction-amount-value {
+            font-weight: var(--font-bold);
+            font-size: var(--text-lg);
+        }
+
+        .transaction-amount-value.positive {
+            color: var(--color-success-600);
+        }
+
+        .transaction-amount-value.negative {
+            color: var(--color-error-600);
+        }
+
+        .transaction-balance {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .no-transactions {
+            text-align: center;
+            padding: var(--space-10);
+            color: var(--text-muted);
+        }
+
+        .no-transactions-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-4);
+        }
+
+        .load-more {
+            display: flex;
+            justify-content: center;
+            padding: var(--space-4);
+            border-top: 1px solid var(--border-default);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <span class="balance-display" id="balanceDisplay">₱0.00</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <div class="transaction-header">
+                <div>
+                    <h1 class="text-2xl font-bold">Transaction History</h1>
+                    <p class="text-muted">View all your deposits, orders, and refunds</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="btn btn-secondary" id="exportBtn">Export CSV</button>
+                    <a href="funds.html" class="btn btn-primary">Add Funds</a>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="transaction-summary">
+                <div class="summary-card">
+                    <div class="summary-card-label">Total Deposited</div>
+                    <div class="summary-card-value positive" id="totalDeposits">₱0.00</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-label">Total Spent</div>
+                    <div class="summary-card-value negative" id="totalSpent">₱0.00</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-label">Total Refunds</div>
+                    <div class="summary-card-value positive" id="totalRefunds">₱0.00</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-card-label">Current Balance</div>
+                    <div class="summary-card-value" id="currentBalance">₱0.00</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="transaction-filters">
+                <select class="form-select" id="typeFilter" style="min-width: 150px;">
+                    <option value="all">All Types</option>
+                    <option value="deposit">Deposits</option>
+                    <option value="order">Orders</option>
+                    <option value="refund">Refunds</option>
+                    <option value="bonus">Bonuses</option>
+                </select>
+
+                <select class="form-select" id="dateFilter" style="min-width: 150px;">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                </select>
+
+                <input type="text" class="form-input" id="searchFilter" placeholder="Search transactions..."
+                    style="min-width: 200px;">
+            </div>
+
+            <!-- Transaction List -->
+            <div class="transaction-card" id="transactionList">
+                <div class="no-transactions">
+                    <div class="no-transactions-icon">📋</div>
+                    <h3>No transactions yet</h3>
+                    <p>Your transaction history will appear here</p>
+                    <a href="funds.html" class="btn btn-primary mt-4">Make Your First Deposit</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let allTransactions = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!Auth.requireAuth()) return;
+
+            loadTransactions();
+
+            // Filters
+            document.getElementById('typeFilter').addEventListener('change', filterTransactions);
+            document.getElementById('dateFilter').addEventListener('change', filterTransactions);
+            document.getElementById('searchFilter').addEventListener('input', Utils.debounce(filterTransactions, 300));
+
+            // Export
+            document.getElementById('exportBtn').addEventListener('click', exportCSV);
+        });
+
+        function loadTransactions() {
+            // Combine different transaction sources
+            const orders = Storage.get('orders', []).map(o => ({
+                id: o.id,
+                type: 'order',
+                title: `Order #${o.id}`,
+                description: o.serviceName || 'Service order',
+                amount: -(o.charge || 0),
+                balance: o.balanceAfter || 0,
+                date: o.createdAt || new Date().toISOString()
+            }));
+
+            const deposits = Storage.get('deposits', []).map(d => ({
+                id: d.id,
+                type: 'deposit',
+                title: d.method || 'Deposit',
+                description: `Reference: ${d.reference || 'N/A'}`,
+                amount: d.amount || 0,
+                balance: d.balanceAfter || 0,
+                date: d.createdAt || new Date().toISOString()
+            }));
+
+            const refunds = Storage.get('refunds', []).map(r => ({
+                id: r.id,
+                type: 'refund',
+                title: `Refund for Order #${r.orderId}`,
+                description: r.reason || 'Order refund',
+                amount: r.amount || 0,
+                balance: r.balanceAfter || 0,
+                date: r.createdAt || new Date().toISOString()
+            }));
+
+            // Combine and sort by date
+            allTransactions = [...orders, ...deposits, ...refunds]
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // Add mock data if empty
+            if (allTransactions.length === 0) {
+                allTransactions = generateMockTransactions();
+            }
+
+            updateSummary();
+            renderTransactions(allTransactions);
+        }
+
+        function generateMockTransactions() {
+            const mock = [];
+            const now = new Date();
+
+            for (let i = 0; i < 15; i++) {
+                const date = new Date(now - i * 24 * 60 * 60 * 1000);
+                const type = ['deposit', 'order', 'order', 'order'][Math.floor(Math.random() * 4)];
+
+                mock.push({
+                    id: 1000 + i,
+                    type,
+                    title: type === 'deposit' ? 'GCash Deposit' : `Order #${1000 + i}`,
+                    description: type === 'deposit' ? 'Reference: ABC123' : 'Instagram Followers',
+                    amount: type === 'deposit' ? Math.floor(Math.random() * 500) + 100 : -Math.floor(Math.random() * 100) - 10,
+                    balance: 500 - i * 20,
+                    date: date.toISOString()
+                });
+            }
+
+            return mock;
+        }
+
+        function updateSummary() {
+            const deposits = allTransactions.filter(t => t.type === 'deposit').reduce((sum, t) => sum + t.amount, 0);
+            const spent = Math.abs(allTransactions.filter(t => t.type === 'order').reduce((sum, t) => sum + t.amount, 0));
+            const refunds = allTransactions.filter(t => t.type === 'refund').reduce((sum, t) => sum + t.amount, 0);
+
+            document.getElementById('totalDeposits').textContent = SMMApi.formatPrice(deposits);
+            document.getElementById('totalSpent').textContent = SMMApi.formatPrice(spent);
+            document.getElementById('totalRefunds').textContent = SMMApi.formatPrice(refunds);
+            document.getElementById('currentBalance').textContent = SMMApi.formatPrice(Auth.getBalance());
+        }
+
+        function filterTransactions() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const search = document.getElementById('searchFilter').value.toLowerCase();
+
+            let filtered = [...allTransactions];
+
+            // Type filter
+            if (typeFilter !== 'all') {
+                filtered = filtered.filter(t => t.type === typeFilter);
+            }
+
+            // Date filter
+            if (dateFilter !== 'all') {
+                const now = new Date();
+                filtered = filtered.filter(t => {
+                    const date = new Date(t.date);
+                    switch (dateFilter) {
+                        case 'today': return date.toDateString() === now.toDateString();
+                        case 'week': return (now - date) < 7 * 24 * 60 * 60 * 1000;
+                        case 'month': return (now - date) < 30 * 24 * 60 * 60 * 1000;
+                        case 'year': return (now - date) < 365 * 24 * 60 * 60 * 1000;
+                        default: return true;
+                    }
+                });
+            }
+
+            // Search filter
+            if (search) {
+                filtered = filtered.filter(t =>
+                    t.title.toLowerCase().includes(search) ||
+                    t.description.toLowerCase().includes(search) ||
+                    t.id.toString().includes(search)
+                );
+            }
+
+            renderTransactions(filtered);
+        }
+
+        function renderTransactions(transactions) {
+            const container = document.getElementById('transactionList');
+
+            if (transactions.length === 0) {
+                container.innerHTML = `
+                    <div class="no-transactions">
+                        <div class="no-transactions-icon">🔍</div>
+                        <h3>No transactions found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = transactions.map(t => `
+                <div class="transaction-item" data-id="${t.id}">
+                    <div class="transaction-icon ${t.type}">
+                        ${getIcon(t.type)}
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">${t.title}</div>
+                        <div class="transaction-meta">${t.description} • ${Utils.formatRelativeTime(t.date)}</div>
+                    </div>
+                    <div class="transaction-amount">
+                        <div class="transaction-amount-value ${t.amount >= 0 ? 'positive' : 'negative'}">
+                            ${t.amount >= 0 ? '+' : ''}${SMMApi.formatPrice(t.amount)}
+                        </div>
+                        <div class="transaction-balance">Bal: ${SMMApi.formatPrice(t.balance)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getIcon(type) {
+            switch (type) {
+                case 'deposit': return '💰';
+                case 'order': return '📦';
+                case 'refund': return '↩️';
+                case 'bonus': return '🎁';
+                default: return '📋';
+            }
+        }
+
+        function exportCSV() {
+            const headers = ['ID', 'Type', 'Title', 'Description', 'Amount', 'Balance', 'Date'];
+            const rows = allTransactions.map(t => [
+                t.id,
+                t.type,
+                t.title,
+                t.description,
+                t.amount,
+                t.balance,
+                new Date(t.date).toLocaleString()
+            ]);
+
+            const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `transactions_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+
+            URL.revokeObjectURL(url);
+            Notify.success('Transaction history exported');
+        }
+    </script>
+</body>
+
+</html>

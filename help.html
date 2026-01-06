@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SMMFamy Help Center - Guides and tutorials">
+    <title>Help Center - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <style>
+        .help-hero {
+            text-align: center;
+            padding: var(--space-12) var(--space-6);
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-secondary-50));
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-8);
+        }
+
+        .help-hero h1 {
+            font-size: var(--text-4xl);
+            margin-bottom: var(--space-3);
+        }
+
+        .help-search {
+            max-width: 500px;
+            margin: var(--space-6) auto 0;
+        }
+
+        .help-search input {
+            text-align: center;
+            font-size: var(--text-lg);
+            padding: var(--space-4);
+        }
+
+        .help-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-10);
+        }
+
+        .help-category {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            border: 1px solid var(--border-default);
+            transition: var(--transition-normal);
+        }
+
+        .help-category:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary-300);
+        }
+
+        .category-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--color-primary-100);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: var(--space-4);
+        }
+
+        .category-title {
+            font-size: var(--text-xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-2);
+        }
+
+        .category-description {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-4);
+        }
+
+        .category-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .category-links a {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+
+        .category-links a:hover {
+            background: var(--bg-surface);
+            color: var(--color-primary-600);
+        }
+
+        .popular-articles {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            border: 1px solid var(--border-default);
+            margin-bottom: var(--space-10);
+        }
+
+        .popular-articles h2 {
+            text-align: center;
+            margin-bottom: var(--space-6);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-4);
+        }
+
+        .article-card {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            transition: var(--transition-fast);
+        }
+
+        .article-card:hover {
+            background: var(--color-primary-50);
+        }
+
+        .article-number {
+            width: 32px;
+            height: 32px;
+            background: var(--color-primary-500);
+            color: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-bold);
+            font-size: var(--text-sm);
+            flex-shrink: 0;
+        }
+
+        .article-content h3 {
+            font-size: var(--text-base);
+            margin-bottom: var(--space-1);
+        }
+
+        .article-content p {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .video-tutorials {
+            margin-bottom: var(--space-10);
+        }
+
+        .video-tutorials h2 {
+            text-align: center;
+            margin-bottom: var(--space-6);
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--border-default);
+            transition: var(--transition-normal);
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .video-thumbnail {
+            aspect-ratio: 16/9;
+            background: var(--bg-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: var(--space-2);
+            right: var(--space-2);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: var(--text-xs);
+        }
+
+        .video-info {
+            padding: var(--space-4);
+        }
+
+        .video-info h3 {
+            font-size: var(--text-base);
+            margin-bottom: var(--space-1);
+        }
+
+        .video-info p {
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+        }
+
+        .contact-support {
+            background: linear-gradient(135deg, var(--color-primary-600), var(--color-secondary-600));
+            color: white;
+            border-radius: var(--radius-xl);
+            padding: var(--space-10);
+            text-align: center;
+        }
+
+        .contact-support h2 {
+            margin-bottom: var(--space-3);
+        }
+
+        .contact-support p {
+            opacity: 0.9;
+            margin-bottom: var(--space-6);
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: var(--space-3);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-buttons .btn {
+            min-width: 160px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                    SMMFamy
+                </a>
+
+                <button class="nav-toggle" id="navToggle">Menu</button>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="orders.html" class="nav-link">Orders</a></li>
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions">
+                    <a href="login.html" class="btn btn-ghost">Sign In</a>
+                    <a href="register.html" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-page">
+            <!-- Hero -->
+            <div class="help-hero">
+                <h1>How can we help you?</h1>
+                <p class="text-lg">Search our knowledge base or browse categories below</p>
+                <div class="help-search">
+                    <input type="text" class="form-input" id="helpSearch" placeholder="🔍 Search for articles...">
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="help-categories">
+                <div class="help-category">
+                    <div class="category-icon">🚀</div>
+                    <h3 class="category-title">Getting Started</h3>
+                    <p class="category-description">New to SMMFamy? Start here with the basics.</p>
+                    <div class="category-links">
+                        <a href="#">→ Creating your account</a>
+                        <a href="#">→ Adding funds to your account</a>
+                        <a href="#">→ Placing your first order</a>
+                        <a href="#">→ Understanding order statuses</a>
+                    </div>
+                </div>
+
+                <div class="help-category">
+                    <div class="category-icon">📦</div>
+                    <h3 class="category-title">Orders & Delivery</h3>
+                    <p class="category-description">Learn about orders, tracking, and delivery times.</p>
+                    <div class="category-links">
+                        <a href="#">→ How to check order status</a>
+                        <a href="#">→ Delivery time estimates</a>
+                        <a href="#">→ What to do if order is stuck</a>
+                        <a href="#">→ Requesting a refill</a>
+                    </div>
+                </div>
+
+                <div class="help-category">
+                    <div class="category-icon">💳</div>
+                    <h3 class="category-title">Payments & Billing</h3>
+                    <p class="category-description">Payment methods, refunds, and billing questions.</p>
+                    <div class="category-links">
+                        <a href="#">→ Accepted payment methods</a>
+                        <a href="#">→ How to add funds via GCash</a>
+                        <a href="#">→ Refund policy explained</a>
+                        <a href="#">→ Transaction history</a>
+                    </div>
+                </div>
+
+                <div class="help-category">
+                    <div class="category-icon">🔧</div>
+                    <h3 class="category-title">API & Integration</h3>
+                    <p class="category-description">Connect your panel to SMMFamy via API.</p>
+                    <div class="category-links">
+                        <a href="api-docs.html">→ API Documentation</a>
+                        <a href="#">→ Getting your API key</a>
+                        <a href="#">→ Common integration issues</a>
+                        <a href="#">→ Rate limits & best practices</a>
+                    </div>
+                </div>
+
+                <div class="help-category">
+                    <div class="category-icon">👤</div>
+                    <h3 class="category-title">Account & Security</h3>
+                    <p class="category-description">Manage your account settings and security.</p>
+                    <div class="category-links">
+                        <a href="#">→ Updating your password</a>
+                        <a href="#">→ Enabling 2FA</a>
+                        <a href="#">→ Account recovery</a>
+                        <a href="#">→ Deleting your account</a>
+                    </div>
+                </div>
+
+                <div class="help-category">
+                    <div class="category-icon">💼</div>
+                    <h3 class="category-title">Reseller Program</h3>
+                    <p class="category-description">Information for resellers and panel owners.</p>
+                    <div class="category-links">
+                        <a href="reseller.html">→ Becoming a reseller</a>
+                        <a href="#">→ Reseller tier benefits</a>
+                        <a href="#">→ Setting up your panel</a>
+                        <a href="#">→ Partner program</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Articles -->
+            <div class="popular-articles">
+                <h2>📚 Most Popular Articles</h2>
+                <div class="articles-grid">
+                    <a href="#" class="article-card">
+                        <span class="article-number">1</span>
+                        <div class="article-content">
+                            <h3>How to Place an Order</h3>
+                            <p>Step-by-step guide to ordering services</p>
+                        </div>
+                    </a>
+                    <a href="#" class="article-card">
+                        <span class="article-number">2</span>
+                        <div class="article-content">
+                            <h3>Payment Methods Guide</h3>
+                            <p>All accepted payment options explained</p>
+                        </div>
+                    </a>
+                    <a href="#" class="article-card">
+                        <span class="article-number">3</span>
+                        <div class="article-content">
+                            <h3>Understanding Refills</h3>
+                            <p>How the refill guarantee works</p>
+                        </div>
+                    </a>
+                    <a href="#" class="article-card">
+                        <span class="article-number">4</span>
+                        <div class="article-content">
+                            <h3>Why Orders Get Canceled</h3>
+                            <p>Common reasons and solutions</p>
+                        </div>
+                    </a>
+                    <a href="#" class="article-card">
+                        <span class="article-number">5</span>
+                        <div class="article-content">
+                            <h3>API Integration Guide</h3>
+                            <p>Connect your panel in minutes</p>
+                        </div>
+                    </a>
+                    <a href="#" class="article-card">
+                        <span class="article-number">6</span>
+                        <div class="article-content">
+                            <h3>Delivery Speed Explained</h3>
+                            <p>What affects delivery times</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Video Tutorials -->
+            <div class="video-tutorials">
+                <h2>🎥 Video Tutorials</h2>
+                <div class="videos-grid">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            ▶️
+                            <span class="video-duration">3:45</span>
+                        </div>
+                        <div class="video-info">
+                            <h3>Complete Beginner's Guide</h3>
+                            <p>Everything you need to know to get started</p>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            ▶️
+                            <span class="video-duration">2:30</span>
+                        </div>
+                        <div class="video-info">
+                            <h3>How to Add Funds via GCash</h3>
+                            <p>Quick tutorial on adding funds</p>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            ▶️
+                            <span class="video-duration">5:12</span>
+                        </div>
+                        <div class="video-info">
+                            <h3>API Setup for Resellers</h3>
+                            <p>Connect your panel step by step</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="contact-support">
+                <h2>Still need help?</h2>
+                <p>Our support team is available 24/7 to assist you with any questions.</p>
+                <div class="contact-buttons">
+                    <a href="contact.html" class="btn" style="background: white; color: var(--color-primary-600);">
+                        💬 Contact Support
+                    </a>
+                    <a href="tickets.html" class="btn btn-ghost" style="border-color: white; color: white;">
+                        🎫 Open a Ticket
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <div class="footer-links">
+                        <a href="terms.html">Terms of Service</a>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="faq.html">FAQ</a>
+                    </div>
+                    <p>2026 SMMFamy. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.getElementById('helpSearch').addEventListener('input', Utils.debounce((e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 2) return;
+
+            // Mock search - in production would search actual knowledge base
+            Notify.info(`Searching for "${query}"...`);
+        }, 500));
+    </script>
+</body>
+
+</html>

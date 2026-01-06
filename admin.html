@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SMMFamy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Admin Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="nav-logo">
+                <img src="assets/logo.png" alt="SMMFamy" class="nav-logo-img">
+                <span>Admin</span>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="#dashboard" class="admin-nav-item active" data-page="dashboard">
+                    <span>Dashboard</span>
+                </a>
+                <a href="#users" class="admin-nav-item" data-page="users">
+                    <span>Users</span>
+                </a>
+                <a href="#orders" class="admin-nav-item" data-page="orders">
+                    <span>Orders</span>
+                </a>
+                <a href="#payments" class="admin-nav-item" data-page="payments">
+                    <span>Payments</span>
+                </a>
+                <a href="#settings" class="admin-nav-item" data-page="settings">
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div style="margin-top: auto; padding-top: var(--space-4); border-top: 1px solid var(--border-default);">
+                <a href="index" class="admin-nav-item">
+                    <span>Back to Site</span>
+                </a>
+                <a href="#" class="admin-nav-item" id="adminLogout">
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Admin Content -->
+        <div class="admin-content">
+            <!-- Dashboard Page -->
+            <div class="admin-page" id="pageDashboard">
+                <div class="app-page-header">
+                    <h1 class="app-page-title">Admin Dashboard</h1>
+                    <span class="text-muted" id="adminWelcome">Welcome, Admin</span>
+                </div>
+
+                <!-- Stats -->
+                <div class="dashboard-grid" style="margin-bottom: var(--space-8);">
+                    <div class="card stat-card">
+                        <div class="stat-icon">P</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="adminRevenue">P0.00</div>
+                            <div class="stat-label">Total Revenue</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon"
+                            style="background: linear-gradient(135deg, var(--color-info-500), var(--color-primary-500));">
+                            #</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="adminOrders">0</div>
+                            <div class="stat-label">Total Orders</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon"
+                            style="background: linear-gradient(135deg, var(--color-success-500), var(--color-accent-500));">
+                            U</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="adminUsers">0</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon"
+                            style="background: linear-gradient(135deg, var(--color-warning-500), var(--color-error-400));">
+                            !</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="adminPending">0</div>
+                            <div class="stat-label">Pending Payments</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: var(--space-4);">Recent Activity</h3>
+                    <div id="recentActivity">
+                        <p class="text-muted">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Page -->
+            <div class="admin-page hidden" id="pageUsers">
+                <div class="app-page-header">
+                    <h1 class="app-page-title">User Management</h1>
+                    <button class="btn btn-primary" id="refreshUsers">Refresh</button>
+                </div>
+
+                <div class="card">
+                    <div class="table-wrapper" id="usersTable">
+                        <p class="text-muted">Loading users...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Page -->
+            <div class="admin-page hidden" id="pageOrders">
+                <div class="app-page-header">
+                    <h1 class="app-page-title">All Orders</h1>
+                    <button class="btn btn-primary" id="refreshAdminOrders">Refresh</button>
+                </div>
+
+                <div class="card">
+                    <div class="table-wrapper" id="adminOrdersTable">
+                        <p class="text-muted">Loading orders...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments Page -->
+            <div class="admin-page hidden" id="pagePayments">
+                <div class="app-page-header">
+                    <h1 class="app-page-title">Pending Payments</h1>
+                </div>
+
+                <div class="card">
+                    <div id="pendingPaymentsList">
+                        <p class="text-muted">Loading pending payments...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="admin-page hidden" id="pageSettings">
+                <div class="app-page-header">
+                    <h1 class="app-page-title">Settings</h1>
+                </div>
+
+                <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+                    <!-- API Settings -->
+                    <div class="card">
+                        <h3 class="card-title" style="margin-bottom: var(--space-4);">API Configuration</h3>
+                        <div class="form-group">
+                            <label class="form-label">SMMGen API Key</label>
+                            <input type="password" class="form-input" id="settingApiKey" placeholder="Enter API key">
+                            <div class="form-helper">Get your API key from smmgen.com</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Profit Multiplier</label>
+                            <input type="number" class="form-input" id="settingMultiplier" value="2.5" min="1" max="10"
+                                step="0.1">
+                            <div class="form-helper">2.5x = 150% profit margin</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">PHP Exchange Rate</label>
+                            <input type="number" class="form-input" id="settingPhpRate" value="56" min="1" max="100">
+                            <div class="form-helper">1 USD = X PHP</div>
+                        </div>
+                        <button class="btn btn-primary" id="saveApiSettings">Save API Settings</button>
+                    </div>
+
+                    <!-- Payment Settings -->
+                    <div class="card">
+                        <h3 class="card-title" style="margin-bottom: var(--space-4);">Payment Configuration</h3>
+                        <div class="form-group">
+                            <label class="form-label">GCash Number</label>
+                            <input type="text" class="form-input" id="settingGcash" placeholder="09XXXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Maya Number</label>
+                            <input type="text" class="form-input" id="settingMaya" placeholder="09XXXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Account Name</label>
+                            <input type="text" class="form-input" id="settingAccountName" placeholder="Juan D.">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Messenger Link</label>
+                            <input type="url" class="form-input" id="settingMessenger"
+                                placeholder="https://m.me/yourpage">
+                        </div>
+                        <button class="btn btn-primary" id="savePaymentSettings">Save Payment Settings</button>
+                    </div>
+                </div>
+
+                <!-- Security Notice -->
+                <div class="alert alert-warning" style="margin-top: var(--space-6);">
+                    <div class="alert-content">
+                        <div class="alert-title">Security Notice</div>
+                        <p>Your admin credentials are: <strong>kageroufs@gmail.com</strong>. For production use,
+                            implement a proper backend authentication system with password hashing and secure session
+                            management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script>
+        // Admin Panel Logic
+        const Admin = {
+            init() {
+                // Check admin access
+                if (!Auth.requireAdmin()) return;
+
+                // Initialize navigation
+                this.initNav();
+
+                // Load current page from hash
+                const hash = window.location.hash.replace('#', '') || 'dashboard';
+                this.showPage(hash);
+
+                // Logout button
+                document.getElementById('adminLogout').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    Auth.logout();
+                });
+
+                // Refresh buttons
+                document.getElementById('refreshUsers')?.addEventListener('click', () => this.loadUsers());
+                document.getElementById('refreshAdminOrders')?.addEventListener('click', () => this.loadOrders());
+
+                // Save settings buttons
+                document.getElementById('saveApiSettings')?.addEventListener('click', () => this.saveApiSettings());
+                document.getElementById('savePaymentSettings')?.addEventListener('click', () => this.savePaymentSettings());
+
+                // Load initial settings
+                this.loadSettings();
+            },
+
+            initNav() {
+                document.querySelectorAll('.admin-nav-item[data-page]').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const page = item.dataset.page;
+                        window.location.hash = page;
+                        this.showPage(page);
+                    });
+                });
+
+                window.addEventListener('hashchange', () => {
+                    const hash = window.location.hash.replace('#', '') || 'dashboard';
+                    this.showPage(hash);
+                });
+            },
+
+            showPage(page) {
+                // Update nav
+                document.querySelectorAll('.admin-nav-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.page === page);
+                });
+
+                // Show page
+                document.querySelectorAll('.admin-page').forEach(p => p.classList.add('hidden'));
+                const pageEl = document.getElementById('page' + page.charAt(0).toUpperCase() + page.slice(1));
+                if (pageEl) {
+                    pageEl.classList.remove('hidden');
+                    this.loadPageData(page);
+                }
+            },
+
+            loadPageData(page) {
+                switch (page) {
+                    case 'dashboard':
+                        this.loadDashboard();
+                        break;
+                    case 'users':
+                        this.loadUsers();
+                        break;
+                    case 'orders':
+                        this.loadOrders();
+                        break;
+                    case 'payments':
+                        this.loadPayments();
+                        break;
+                }
+            },
+
+            loadDashboard() {
+                const stats = Stats.getAdminStats();
+
+                document.getElementById('adminRevenue').textContent = SMMApi.formatPrice(stats.revenue.total);
+                document.getElementById('adminOrders').textContent = stats.orders.total;
+                document.getElementById('adminUsers').textContent = stats.users.total;
+                document.getElementById('adminPending').textContent = stats.pending.payments;
+
+                // Load recent activity
+                const logs = Storage.get('activityLogs', []).slice(0, 10);
+                const activityEl = document.getElementById('recentActivity');
+
+                if (logs.length === 0) {
+                    activityEl.innerHTML = '<p class="text-muted">No recent activity</p>';
+                } else {
+                    activityEl.innerHTML = logs.map(log => `
+                        <div style="padding: var(--space-2) 0; border-bottom: 1px solid var(--border-default);">
+                            <strong>${log.action}</strong> - ${log.userEmail || 'System'}
+                            <span class="text-muted text-sm" style="margin-left: var(--space-2);">${Utils.formatRelativeTime(log.timestamp)}</span>
+                        </div>
+                    `).join('');
+                }
+            },
+
+            loadUsers() {
+                const users = Auth.getAllUsers();
+                const container = document.getElementById('usersTable');
+
+                if (users.length === 0) {
+                    container.innerHTML = '<p class="text-muted">No users found</p>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Balance</th>
+                                <th>Orders</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${users.map(user => `
+                                <tr>
+                                    <td><code>${user.id}</code></td>
+                                    <td>${Utils.escapeHtml(user.name)}</td>
+                                    <td>${user.email}</td>
+                                    <td>${SMMApi.formatPrice(user.balance || 0)}</td>
+                                    <td>${user.totalOrders || 0}</td>
+                                    <td>${Utils.formatRelativeTime(user.createdAt)}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary" onclick="Admin.editUserBalance('${user.id}')">
+                                            Edit Balance
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            },
+
+            async editUserBalance(userId) {
+                const newBalance = await Notify.prompt('Enter new balance:', {
+                    title: 'Edit User Balance',
+                    type: 'number',
+                    placeholder: '0.00'
+                });
+
+                if (newBalance !== null) {
+                    const success = Auth.updateUserBalance(userId, parseFloat(newBalance));
+                    if (success) {
+                        Notify.success('Balance updated successfully');
+                        this.loadUsers();
+                    } else {
+                        Notify.error('Failed to update balance');
+                    }
+                }
+            },
+
+            loadOrders() {
+                const orders = Auth.getOrders();
+                const container = document.getElementById('adminOrdersTable');
+
+                if (orders.length === 0) {
+                    container.innerHTML = '<p class="text-muted">No orders found</p>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>User</th>
+                                <th>Service</th>
+                                <th>Quantity</th>
+                                <th>Charge</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orders.map(order => `
+                                <tr>
+                                    <td><code>${order.id}</code></td>
+                                    <td>${order.userEmail}</td>
+                                    <td>${Utils.truncate(order.serviceName, 25)}</td>
+                                    <td>${Utils.formatNumber(order.quantity)}</td>
+                                    <td>${SMMApi.formatPrice(order.charge)}</td>
+                                    <td><span class="status-badge status-${order.status.toLowerCase().replace(' ', '-')}">${order.status}</span></td>
+                                    <td>${Utils.formatRelativeTime(order.createdAt)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            },
+
+            loadPayments() {
+                const pending = Payments.getAllPendingPayments();
+                const container = document.getElementById('pendingPaymentsList');
+
+                if (pending.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h3 class="empty-state-title">No Pending Payments</h3>
+                            <p class="empty-state-description">All payments have been processed.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = pending.map(payment => `
+                    <div class="card card-sm" style="margin-bottom: var(--space-3);">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <strong>${SMMApi.formatPrice(payment.amount)}</strong> via ${payment.method.toUpperCase()}
+                                <div class="text-sm text-muted">
+                                    ${payment.userEmail} - ${payment.id}
+                                </div>
+                                <div class="text-xs text-muted">
+                                    Created: ${Utils.formatRelativeTime(payment.createdAt)}
+                                    ${payment.paidAt ? ' | Marked paid: ' + Utils.formatRelativeTime(payment.paidAt) : ''}
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn btn-sm btn-success" onclick="Admin.approvePayment('${payment.id}')">
+                                    Approve
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="Admin.rejectPayment('${payment.id}')">
+                                    Reject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            },
+
+            async approvePayment(paymentId) {
+                const confirmed = await Notify.confirm('Approve this payment and add funds to user?', {
+                    title: 'Approve Payment',
+                    type: 'success'
+                });
+
+                if (confirmed) {
+                    const success = Payments.approvePayment(paymentId);
+                    if (success) {
+                        Notify.success('Payment approved! Funds added to user.');
+                        this.loadPayments();
+                        this.loadDashboard();
+                    } else {
+                        Notify.error('Failed to approve payment');
+                    }
+                }
+            },
+
+            async rejectPayment(paymentId) {
+                const reason = await Notify.prompt('Reason for rejection (optional):', {
+                    title: 'Reject Payment',
+                    placeholder: 'Enter reason...'
+                });
+
+                if (reason !== null) {
+                    const success = Payments.rejectPayment(paymentId, reason);
+                    if (success) {
+                        Notify.success('Payment rejected');
+                        this.loadPayments();
+                    } else {
+                        Notify.error('Failed to reject payment');
+                    }
+                }
+            },
+
+            loadSettings() {
+                // Load saved settings
+                const settings = Storage.get('adminSettings', {});
+
+                if (settings.apiKey) document.getElementById('settingApiKey').value = settings.apiKey;
+                if (settings.multiplier) document.getElementById('settingMultiplier').value = settings.multiplier;
+                if (settings.phpRate) document.getElementById('settingPhpRate').value = settings.phpRate;
+                if (settings.gcash) document.getElementById('settingGcash').value = settings.gcash;
+                if (settings.maya) document.getElementById('settingMaya').value = settings.maya;
+                if (settings.accountName) document.getElementById('settingAccountName').value = settings.accountName;
+                if (settings.messenger) document.getElementById('settingMessenger').value = settings.messenger;
+            },
+
+            saveApiSettings() {
+                const settings = Storage.get('adminSettings', {});
+
+                settings.apiKey = document.getElementById('settingApiKey').value;
+                settings.multiplier = parseFloat(document.getElementById('settingMultiplier').value);
+                settings.phpRate = parseInt(document.getElementById('settingPhpRate').value);
+
+                Storage.set('adminSettings', settings);
+
+                // Apply to SMMApi
+                SMMApi.apiKey = settings.apiKey;
+                SMMApi.profitMultiplier = settings.multiplier;
+                SMMApi.phpRate = settings.phpRate;
+
+                Notify.success('API settings saved');
+            },
+
+            savePaymentSettings() {
+                const settings = Storage.get('adminSettings', {});
+
+                settings.gcash = document.getElementById('settingGcash').value;
+                settings.maya = document.getElementById('settingMaya').value;
+                settings.accountName = document.getElementById('settingAccountName').value;
+                settings.messenger = document.getElementById('settingMessenger').value;
+
+                Storage.set('adminSettings', settings);
+
+                // Apply to Payments
+                Payments.config.gcash.number = settings.gcash;
+                Payments.config.maya.number = settings.maya;
+                Payments.config.gcash.name = settings.accountName;
+                Payments.config.maya.name = settings.accountName;
+                Payments.config.messengerLink = settings.messenger;
+
+                Notify.success('Payment settings saved');
+            }
+        };
+
+        // Initialize admin
+        document.addEventListener('DOMContentLoaded', () => Admin.init());
+    </script>
+</body>
+
+</html>

@@ -57,7 +57,7 @@
             </form>
 
             <div class="auth-footer">
-                Don't have an account? <a href="register.html">Sign up for free</a>
+                Don't have an account? <a href="register">Sign up for free</a>
             </div>
         </div>
     </div>
@@ -94,10 +94,10 @@
                 if (result.success) {
                     // Redirect based on user type
                     if (result.user.isAdmin) {
-                        window.location.href = 'admin.html';
+                        window.location.href = 'admin';
                     } else {
                         // Check for redirect URL
-                        const redirect = Storage.session.get('redirectAfterLogin', 'services.html');
+                        const redirect = Storage.session.get('redirectAfterLogin', 'services');
                         Storage.session.remove('redirectAfterLogin');
                         window.location.href = redirect;
                     }
@@ -112,7 +112,7 @@
 
         // Redirect if already logged in
         if (Auth.isLoggedIn()) {
-            window.location.href = 'services.html';
+            window.location.href = 'services';
         }
     </script>
 </body>

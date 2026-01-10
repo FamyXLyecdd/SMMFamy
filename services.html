@@ -626,6 +626,15 @@
                         <div class="quantity-info" id="quantityInfo">Min: - | Max: -</div>
                     </div>
 
+                    <!-- Custom Comments Input (Hidden by default) -->
+                    <div class="form-section" id="commentsSection" style="display: none;">
+                        <label class="form-section-label">Comments (1 per line)</label>
+                        <textarea class="form-input" id="orderComments" rows="5" placeholder="Great post!
+Nice pic
+Love it"></textarea>
+                        <div class="form-helper" id="commentsHelper">0 comments entered</div>
+                    </div>
+
                     <!-- Average Time -->
                     <div class="avg-time">
                         <div class="avg-time-label">Average Time ⓘ</div>
@@ -759,6 +768,19 @@
             // Quantity change
             document.getElementById('orderQuantity').addEventListener('input', calculateCharge);
 
+            // Comments change
+            document.getElementById('orderComments').addEventListener('input', (e) => {
+                const lines = e.target.value.split('\n').filter(line => line.trim() !== '');
+                const count = lines.length;
+                document.getElementById('commentsHelper').textContent = `${count} comments entered`;
+
+                // Update quantity if custom comments service
+                if (selectedService && isCustomComments(selectedService)) {
+                    document.getElementById('orderQuantity').value = count;
+                    calculateCharge();
+                }
+            });
+
             // Submit order
             document.getElementById('submitOrder').addEventListener('click', submitOrder);
         });
@@ -819,7 +841,8 @@
                     const result = await SMMApi.createOrder({
                         service: selectedService.service,
                         link: link,
-                        quantity: quantity
+                        quantity: quantity,
+                        comments: isCustomComments(selectedService) ? document.getElementById('orderComments').value : ''
                     });
 
                     if (localOrder) localOrder.apiOrderId = result.order;
@@ -852,7 +875,12 @@
 
                 // Reset form
                 document.getElementById('orderLink').value = '';
+                document.getElementById('orderLink').value = '';
                 document.getElementById('orderQuantity').value = selectedService.min;
+                document.getElementById('orderComments').value = '';
+                if (isCustomComments(selectedService)) {
+                    document.getElementById('commentsHelper').textContent = '0 comments entered';
+                }
                 calculateCharge();
 
             } catch (error) {
@@ -1032,8 +1060,24 @@
                 ? '<span class="refill-badge yes">Yes</span>'
                 : '<span class="refill-badge no">No Refill</span>';
 
+            // Custom Comments Toggle
+            const isCustom = isCustomComments(service);
+            const commentsSection = document.getElementById('commentsSection');
+            const qtyInput = document.getElementById('orderQuantity');
+
+            if (isCustom) {
+                commentsSection.style.display = 'block';
+                qtyInput.readOnly = true;
+                qtyInput.value = 0; // Will be set by textarea
+                document.getElementById('commentsHelper').textContent = '0 comments entered';
+            } else {
+                commentsSection.style.display = 'none';
+                qtyInput.readOnly = false;
+                qtyInput.value = service.min;
+            }
+
             // Reset quantity and calculate
-            document.getElementById('orderQuantity').value = service.min;
+            if (!isCustom) document.getElementById('orderQuantity').value = service.min;
             document.getElementById('orderQuantity').min = service.min;
             document.getElementById('orderQuantity').max = service.max;
             calculateCharge();
@@ -1114,6 +1158,13 @@
                     });
                 });
             }
+        }
+
+
+        function isCustomComments(service) {
+            const name = service.name.toLowerCase();
+            const cat = service.category.toLowerCase();
+            return name.includes('custom comments') || (cat.includes('comments') && name.includes('custom'));
         }
 
         function filterServicesInDropdown(query) {

@@ -152,13 +152,13 @@ const App = {
             }
         } else {
             navActions.innerHTML = `
-                <a href="login.html" class="btn btn-ghost">Sign In</a>
-                <a href="register.html" class="btn btn-primary">Get Started</a>
+                <a href="login" class="btn btn-ghost">Sign In</a>
+                <a href="register" class="btn btn-primary">Get Started</a>
             `;
         }
 
         // Update active nav link
-        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        const currentPath = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
         document.querySelectorAll('.nav-link').forEach(link => {
             const href = link.getAttribute('href');
             if (href === currentPath) {
@@ -569,15 +569,58 @@ const App = {
                 refreshBtn.disabled = true;
                 refreshBtn.innerHTML = '<span class="spinner spinner-sm"></span> Refreshing...';
 
-                // Simulate refresh
-                await Utils.sleep(1000);
+                try {
+                    // Get active orders
+                    const orders = Auth.getUserOrders();
+                    const activeOrders = orders.filter(o =>
+                        ['Pending', 'In progress', 'Processing'].includes(o.status) ||
+                        o.status === 'Partial'
+                    );
 
-                this.renderOrders();
+                    let updatedCount = 0;
 
-                refreshBtn.disabled = false;
-                refreshBtn.innerHTML = 'Refresh Status';
+                    // Update status for active orders
+                    for (const order of activeOrders) {
+                        try {
+                            if (!order.apiOrderId) continue;
 
-                Notify.success('Orders refreshed');
+                            const result = await SMMApi.getOrderStatus(order.apiOrderId);
+
+                            if (result && result.status) {
+                                // Map API status to local status if needed (SMMGen usually matches)
+                                const newStatus = result.status; // e.g., 'Completed', 'Partial', 'Canceled'
+
+                                // Only update if changed or data updated
+                                if (order.status !== newStatus || result.remains !== order.remains) {
+                                    Auth.updateOrderStatus(order.id, newStatus, {
+                                        remains: result.remains,
+                                        startCount: result.start_count
+                                    });
+                                    updatedCount++;
+                                }
+                            }
+                        } catch (err) {
+                            console.warn(`Failed to update order ${order.id}:`, err);
+                        }
+
+                        // Small delay to avoid rate limits if many orders
+                        if (activeOrders.length > 5) await Utils.sleep(200);
+                    }
+
+                    this.renderOrders();
+
+                    if (updatedCount > 0) {
+                        Notify.success(`Updated ${updatedCount} orders`);
+                    } else {
+                        Notify.info('Orders are up to date');
+                    }
+                } catch (error) {
+                    console.error('Refresh error:', error);
+                    Notify.error('Failed to refresh orders');
+                } finally {
+                    refreshBtn.disabled = false;
+                    refreshBtn.innerHTML = 'Refresh Status';
+                }
             });
         }
     },
@@ -614,6 +657,7 @@ const App = {
                         <th>Charge</th>
                         <th>Status</th>
                         <th>Date</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -626,6 +670,9 @@ const App = {
                             <td>${SMMApi.formatPrice(order.charge)}</td>
                             <td><span class="status-badge status-${order.status.toLowerCase().replace(' ', '-')}">${order.status}</span></td>
                             <td>${Utils.formatRelativeTime(order.createdAt)}</td>
+                            <td>
+                                ${window.RefillMonitor ? RefillMonitor.renderRefillButton(order) : ''}
+                            </td>
                         </tr>
                     `).join('')}
                 </tbody>

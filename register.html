@@ -135,7 +135,7 @@
                 const result = Auth.register(name, email, password, confirmPassword);
 
                 if (result.success) {
-                    window.location.href = 'services.html';
+                    window.location.href = 'services';
                 } else {
                     errorEl.textContent = result.error;
                     errorEl.style.display = 'block';
@@ -147,7 +147,7 @@
 
         // Redirect if already logged in
         if (Auth.isLoggedIn()) {
-            window.location.href = 'services.html';
+            window.location.href = 'services';
         }
     </script>
 </body>
